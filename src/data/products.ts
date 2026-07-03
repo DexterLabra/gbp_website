@@ -297,10 +297,10 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
         variantSliderKey: "flamingo",
         variants: [
-            { img: "/images/FLAMINGO.jpg", color: "Standard Pink", desc: "" },
-            { img: "/images/FLAMINGO.jpg", color: "Coral Rose", desc: "" },
-            { img: "/images/FLAMINGO.jpg", color: "Sunset Orange", desc: "" },
-            { img: "/images/FLAMINGO.jpg", color: "Blush White", desc: "" },
+            { img: "/images/FLAMINGO.jpg", color: "Pink, White, Teal", desc: "" },
+            { img: "/images/FLAMINGO_PINK.png", color: "Pink", desc: "" },
+            { img: "/images/FLAMINGO_WHITE.png", color: "White", desc: "" },
+            { img: "/images/FLAMINGO_TEAL.png", color: "Teal", desc: "" },
         ],
     },
     {
