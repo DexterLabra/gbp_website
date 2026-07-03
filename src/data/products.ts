@@ -912,4 +912,14 @@ export const products: Product[] = [
     // Hardware
     { id: "hook-a", name: "Vintage-Inspired Decorative Hooks in Florentine Style", category: "hardware", image: "/images/HOOKA.png", size: "15 x 20 inches", price: "₱799", orderUrl: ORDER_URL },
     { id: "hook-b", name: "Vintage-Inspired Decorative Hooks in Victorian-Gothic Style", category: "hardware", image: "/images/HOOKB.png", size: "15 x 20 inches", price: "₱799", orderUrl: ORDER_URL },
+    
+    {
+        id: "horse-wine-holder",
+        name: "Golden Horse Chariot Wine Holder ",
+        category: "tray",
+        image: "/images/HORSEWINEHOLDER.png",
+        size: "25cm L x 15.3cm W x 33.5cm H",
+        price: "₱1,995",
+        orderUrl: ORDER_URL,
+    },
 ];
