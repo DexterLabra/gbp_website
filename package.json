@@ -1,0 +1,17 @@
+{
+    "name": "gbp-home-art-decors",
+    "type": "module",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "optimize-images": "node scripts/optimize-images.mjs"
+    },
+    "dependencies": {
+        "astro": "7.0.3"
+    },
+    "devDependencies": {
+        "sharp": "^0.35.2"
+    }
+}

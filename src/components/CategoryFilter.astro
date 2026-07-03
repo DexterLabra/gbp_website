@@ -1,0 +1,72 @@
+---
+import { categories } from '../data/products';
+---
+
+<div class="filter-section">
+  <h3 class="filter-title">Browse by Category</h3>
+  <select id="categoryFilter" class="category-dropdown">
+    {categories.map((cat) => (
+      <option value={cat.value}>{cat.label}</option>
+    ))}
+  </select>
+</div>
+
+<style>
+  .filter-section {
+    width: 90%;
+    margin: 20px auto 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .filter-title {
+    font-family: 'Playfair Display', serif;
+    color: #111D7A;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .filter-title::before {
+    content: '✨ ';
+    display: inline-block;
+    animation: iconFloat 2s ease-in-out infinite;
+  }
+
+  @keyframes iconFloat {
+    50% { transform: translateY(-4px) scale(1.15); }
+  }
+
+  .category-dropdown {
+    width: 260px;
+    max-width: 260px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    border: 2px solid #D4A64F;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.4s ease;
+    appearance: none;
+    background: linear-gradient(135deg, #ffffff, #fff8ea);
+    box-shadow: 0 8px 20px rgba(212, 166, 79, 0.18);
+  }
+
+  .category-dropdown:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(212, 166, 79, 0.45);
+    border-color: #FFD978;
+  }
+
+  .category-dropdown:focus {
+    outline: none;
+    border-color: #FFD978;
+    box-shadow: 0 0 0 4px rgba(212, 166, 79, 0.18), 0 12px 28px rgba(212, 166, 79, 0.3);
+  }
+</style>

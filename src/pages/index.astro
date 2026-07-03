@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import IntroScreen from '../components/IntroScreen.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import CategoryFilter from '../components/CategoryFilter.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import Shipping from '../components/Shipping.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import Lightbox from '../components/Lightbox.astro';
+---
+
+<Layout title="GBP Home Art & Decors">
+  <IntroScreen />
+  <Header />
+  <Hero />
+
+  <section id="collections" class="collections-section">
+    <h2 class="section-title">Collections</h2>
+    <CategoryFilter />
+    <ProductGrid />
+  </section>
+
+  <Shipping />
+  <Testimonials />
+  <Contact />
+  <Footer />
+  <Lightbox />
+</Layout>
+
+<script src="../scripts/main.ts"></script>
+
+<style>
+  .section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 45px;
+    margin: 70px 0 50px;
+    color: #111D7A;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: 1s;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 3px;
+    margin: 15px auto 0;
+    background: linear-gradient(to right, #D4A64F, #FFD978, #D4A64F);
+  }
+
+  :global(.section-title.show) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 32px;
+    }
+  }
+</style>

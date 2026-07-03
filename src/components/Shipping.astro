@@ -1,0 +1,119 @@
+---
+---
+
+<section class="shipping-section" id="shipping">
+  <h2 class="section-title">Delivery & Shipping Options</h2>
+  <div class="shipping-grid">
+    <div class="shipping-card">
+      <h3>Same-Day Delivery</h3>
+      <div class="shipping-logos">
+        <img loading="lazy" decoding="async" src="/assets/image(39).png" alt="Lalamove" width="90" height="90" />
+        <img loading="lazy" decoding="async" src="/assets/image(40).png" alt="JoyRide" width="90" height="90" />
+      </div>
+    </div>
+    <div class="shipping-card">
+      <h3>Standard Nationwide Shipping</h3>
+      <div class="shipping-logos">
+        <img loading="lazy" decoding="async" src="/assets/image(37).png" alt="Shipping Partner" width="90" height="90" />
+        <img loading="lazy" decoding="async" src="/assets/image(38).png" alt="Shipping Partner" width="90" height="90" />
+      </div>
+      <p>Delivered securely via major couriers.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .shipping-section {
+    padding: 120px 5%;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #ffffff, #f8f3e7);
+  }
+
+  .section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 45px;
+    margin: 0 0 50px;
+    color: #111D7A;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 3px;
+    margin: 15px auto 0;
+    background: linear-gradient(to right, #D4A64F, #FFD978, #D4A64F);
+  }
+
+  .shipping-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .shipping-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(212, 166, 79, 0.25);
+    transition: 0.4s;
+  }
+
+  .shipping-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(212, 166, 79, 0.25);
+  }
+
+  .shipping-logos {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+
+  .shipping-logos img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    transition: 0.4s;
+  }
+
+  .shipping-logos img:hover {
+    transform: scale(1.1) rotate(3deg);
+  }
+
+  .shipping-card h3 {
+    text-align: center;
+    color: #111D7A;
+    margin-bottom: 10px;
+  }
+
+  .shipping-card p {
+    text-align: center;
+    font-size: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .shipping-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .shipping-logos img {
+      width: 70px;
+      height: 70px;
+    }
+
+    .shipping-card p {
+      font-size: 16px;
+    }
+
+    .section-title {
+      font-size: 32px;
+    }
+  }
+</style>

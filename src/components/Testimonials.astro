@@ -1,0 +1,342 @@
+---
+import { feedbackItems } from '../data/feedback';
+
+// Clone last before first, first after last for seamless infinite loop
+const extendedItems = [
+  feedbackItems[feedbackItems.length - 1],
+  ...feedbackItems,
+  feedbackItems[0],
+];
+---
+
+<section class="testimonials-section" id="testimonials">
+  <h2 class="section-title">Customer Feedback</h2>
+  <div class="testimonial-divider"></div>
+  <div class="carousel-viewport" id="feedback-carousel">
+    <button class="carousel-arrow arrow-left" id="fb-prev" aria-label="Previous">❮</button>
+    <div class="carousel-track" id="feedback-track">
+      {extendedItems.map((img, i) => (
+        <div class="carousel-slide" data-index={i}>
+          <div class="testimonial-card">
+            <img loading="lazy" decoding="async" src={img.src} alt={img.alt} />
+          </div>
+        </div>
+      ))}
+    </div>
+    <button class="carousel-arrow arrow-right" id="fb-next" aria-label="Next">❯</button>
+  </div>
+  <div class="carousel-dots" id="feedback-dots">
+    {feedbackItems.map((_, i) => (
+      <button class:list={["dot", { active: i === 0 }]} data-dot={i} aria-label={`Go to feedback ${i + 1}`} />
+    ))}
+  </div>
+</section>
+
+<script define:vars={{ totalReal: feedbackItems.length }}>
+  window.__fbTotal = totalReal;
+</script>
+
+<script>
+  const total = (window as any).__fbTotal as number;
+  const track = document.getElementById("feedback-track")!;
+  const slides = track.querySelectorAll<HTMLElement>(".carousel-slide");
+  const dots = document.querySelectorAll<HTMLButtonElement>("#feedback-dots .dot");
+  const viewport = document.getElementById("feedback-carousel")!;
+
+  // pos is index in the extended array. Real items are at indices 1..total
+  let pos = 1;
+  let timer: ReturnType<typeof setInterval>;
+  let transitioning = false;
+
+  function getSlidePercent() {
+    const val = getComputedStyle(viewport).getPropertyValue('--slide-width').trim();
+    return parseFloat(val) || 33.333;
+  }
+
+  // To center slide[pos], offset = -(pos * slidePercent) + centerOffset
+  // centerOffset positions the active slide in the middle of the viewport
+  function setPosition(animate: boolean) {
+    const slidePercent = getSlidePercent();
+    // Center offset: half viewport minus half slide
+    const centerOffset = (100 - slidePercent) / 2;
+    const offset = -(pos * slidePercent) + centerOffset;
+    if (animate) {
+      track.style.transition = "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+    } else {
+      track.style.transition = "none";
+    }
+    track.style.transform = `translateX(${offset}%)`;
+    updateClasses();
+    updateDots();
+  }
+
+  function updateClasses() {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("is-center", i === pos);
+    });
+  }
+
+  function updateDots() {
+    let real = pos - 1;
+    if (real < 0) real = total - 1;
+    if (real >= total) real = 0;
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === real));
+  }
+
+  function next() {
+    if (transitioning) return;
+    transitioning = true;
+    pos++;
+    setPosition(true);
+  }
+
+  function prev() {
+    if (transitioning) return;
+    transitioning = true;
+    pos--;
+    setPosition(true);
+  }
+
+  // After slide animation ends, handle the infinite jump
+  track.addEventListener("transitionend", (e) => {
+    // Only respond to the track's own transform transition
+    if (e.target !== track) return;
+    transitioning = false;
+
+    if (pos > total) {
+      // We slid to the clone after the last item — jump to first real
+      pos = 1;
+      setPosition(false);
+    } else if (pos < 1) {
+      // We slid to the clone before the first item — jump to last real
+      pos = total;
+      setPosition(false);
+    }
+  });
+
+  function goTo(realIndex: number) {
+    if (transitioning) return;
+    transitioning = true;
+    pos = realIndex + 1;
+    setPosition(true);
+  }
+
+  function startAutoplay() {
+    timer = setInterval(next, 4000);
+  }
+
+  function stopAutoplay() {
+    clearInterval(timer);
+  }
+
+  // Dot clicks
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      goTo(Number(dot.dataset.dot));
+      stopAutoplay();
+      startAutoplay();
+    });
+  });
+
+  // Arrow clicks
+  document.getElementById("fb-prev")?.addEventListener("click", () => { prev(); stopAutoplay(); startAutoplay(); });
+  document.getElementById("fb-next")?.addEventListener("click", () => { next(); stopAutoplay(); startAutoplay(); });
+
+  // Pause on hover
+  viewport.addEventListener("mouseenter", stopAutoplay);
+  viewport.addEventListener("mouseleave", startAutoplay);
+
+  // Touch swipe
+  let startX = 0;
+  viewport.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    stopAutoplay();
+  }, { passive: true });
+  viewport.addEventListener("touchend", (e) => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? next() : prev();
+    }
+    startAutoplay();
+  });
+
+  // Init
+  setPosition(false);
+  startAutoplay();
+</script>
+
+<style>
+  .testimonials-section {
+    padding: 120px 5%;
+    min-height: 80vh;
+    background: linear-gradient(180deg, #faf8f4, #fffdf9);
+    overflow: hidden;
+  }
+
+  .section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 45px;
+    margin: 0 0 20px;
+    color: #111D7A;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 3px;
+    margin: 15px auto 0;
+    background: linear-gradient(to right, #D4A64F, #FFD978, #D4A64F);
+  }
+
+  .testimonial-divider {
+    width: 140px;
+    height: 2px;
+    margin: 0 auto 45px;
+    background: linear-gradient(to right, transparent, #D4A64F, transparent);
+  }
+
+  .carousel-viewport {
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: clip;
+    overflow-y: visible;
+    padding: 40px 0 60px;
+    --slide-width: 33.333;
+    position: relative;
+  }
+
+  .carousel-track {
+    display: flex;
+    will-change: transform;
+  }
+
+  .carousel-slide {
+    flex: 0 0 calc(var(--slide-width, 33.333) * 1%);
+    padding: 0 14px;
+    box-sizing: border-box;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.6s ease,
+                filter 0.6s ease;
+    transform: scale(0.8);
+    opacity: 0.5;
+    filter: blur(1.5px);
+  }
+
+  .carousel-slide:global(.is-center) {
+    transform: scale(1.08);
+    opacity: 1;
+    filter: blur(0);
+    z-index: 2;
+  }
+
+  .testimonial-card {
+    border-radius: 24px;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid rgba(212, 166, 79, 0.25);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: box-shadow 0.6s ease, border-color 0.6s ease;
+  }
+
+  .carousel-slide:global(.is-center) .testimonial-card {
+    box-shadow: 0 24px 60px rgba(212, 166, 79, 0.4), 0 0 30px rgba(212, 166, 79, 0.15);
+    border-color: rgba(212, 166, 79, 0.6);
+  }
+
+  .testimonial-card img {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 166, 79, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    color: #111D7A;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel-arrow:hover {
+    background: #D4A64F;
+    color: #fff;
+    border-color: #D4A64F;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .arrow-left { left: 12px; }
+  .arrow-right { right: 12px; }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: #d8d8d8;
+    cursor: pointer;
+    transition: 0.4s;
+  }
+
+  .dot.active {
+    background: #D4A64F;
+    transform: scale(1.3);
+  }
+
+  @media (max-width: 768px) {
+    .testimonials-section {
+      padding: 80px 5%;
+    }
+
+    .section-title {
+      font-size: 32px;
+    }
+
+    .carousel-viewport {
+      --slide-width: 80;
+    }
+
+    .carousel-slide {
+      flex: 0 0 calc(var(--slide-width, 33.333) * 1%);
+      padding: 0 8px;
+    }
+
+    .carousel-slide:global(.is-center) {
+      transform: scale(1.02);
+    }
+
+    .carousel-arrow {
+      width: 38px;
+      height: 38px;
+      font-size: 16px;
+    }
+
+    .arrow-left { left: 4px; }
+    .arrow-right { right: 4px; }
+  }
+</style>

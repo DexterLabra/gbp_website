@@ -1,0 +1,245 @@
+---
+---
+
+<div id="lightbox" class="lightbox" aria-hidden="true">
+  <button class="lb-close" aria-label="Close preview">&times;</button>
+  <button class="lb-prev" aria-label="Previous image">❮</button>
+  <img class="lb-image" src="" alt="" />
+  <button class="lb-next" aria-label="Next image">❯</button>
+  <p class="lb-caption"></p>
+</div>
+
+<script>
+  const lightbox = document.getElementById("lightbox")!;
+  const lbImage = lightbox.querySelector<HTMLImageElement>(".lb-image")!;
+  const lbCaption = lightbox.querySelector<HTMLElement>(".lb-caption")!;
+  const lbClose = lightbox.querySelector<HTMLButtonElement>(".lb-close")!;
+  const lbPrev = lightbox.querySelector<HTMLButtonElement>(".lb-prev")!;
+  const lbNext = lightbox.querySelector<HTMLButtonElement>(".lb-next")!;
+
+  let currentImages: string[] = [];
+  let currentIndex = 0;
+  let currentName = "";
+
+  function openLightbox(images: string[], index: number, name: string) {
+    currentImages = images;
+    currentIndex = index;
+    currentName = name;
+    updateLightbox();
+    lightbox.classList.add("active");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    // Show/hide nav arrows
+    const hasMultiple = currentImages.length > 1;
+    lbPrev.style.display = hasMultiple ? "flex" : "none";
+    lbNext.style.display = hasMultiple ? "flex" : "none";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("active");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function updateLightbox() {
+    lbImage.src = currentImages[currentIndex];
+    lbImage.alt = currentName;
+    if (currentImages.length > 1) {
+      lbCaption.textContent = `${currentName} — ${currentIndex + 1} / ${currentImages.length}`;
+    } else {
+      lbCaption.textContent = currentName;
+    }
+  }
+
+  function navigate(dir: number) {
+    currentIndex = (currentIndex + dir + currentImages.length) % currentImages.length;
+    updateLightbox();
+  }
+
+  // Event listeners
+  lbClose.addEventListener("click", closeLightbox);
+  lbPrev.addEventListener("click", () => navigate(-1));
+  lbNext.addEventListener("click", () => navigate(1));
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("active")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") navigate(-1);
+    if (e.key === "ArrowRight") navigate(1);
+  });
+
+  // Attach click to all product cards
+  document.querySelectorAll<HTMLElement>(".product").forEach((card) => {
+    const variantsData = card.dataset.variants;
+    const name = card.querySelector("h3")?.textContent || "Product";
+
+    // Determine the list of images for this product
+    let images: string[] = [];
+    if (variantsData) {
+      const variants = JSON.parse(variantsData);
+      images = variants.map((v: { img: string }) => v.img);
+    } else {
+      const img = card.querySelector<HTMLImageElement>("img");
+      if (img) images = [img.src];
+    }
+
+    // Make the image area clickable
+    const clickTarget = card.querySelector<HTMLElement>(".variant-slider") || card.querySelector<HTMLImageElement>("img");
+    if (clickTarget) {
+      clickTarget.style.cursor = "zoom-in";
+      clickTarget.addEventListener("click", (e) => {
+        // Don't trigger if clicking nav buttons inside variant slider
+        if ((e.target as HTMLElement).closest(".variant-nav, .variant-dot")) return;
+
+        // Start at the current variant index if applicable
+        let startIndex = 0;
+        if (variantsData) {
+          const activeImg = card.querySelector<HTMLImageElement>(".slider-image");
+          if (activeImg) {
+            // Compare by pathname to handle full URL vs relative path
+            const activeSrc = new URL(activeImg.src, window.location.origin).pathname;
+            startIndex = images.findIndex((img) => {
+              const imgPath = new URL(img, window.location.origin).pathname;
+              return imgPath === activeSrc;
+            });
+            if (startIndex < 0) startIndex = 0;
+          }
+        }
+        openLightbox(images, startIndex, name);
+      });
+    }
+  });
+
+  // Attach click to testimonial/feedback images (independent, no carousel)
+  const testimonialCards = document.querySelectorAll<HTMLElement>(".testimonial-card");
+
+  testimonialCards.forEach((card) => {
+    const img = card.querySelector<HTMLImageElement>("img");
+    if (img) {
+      const src = img.getAttribute("src") || img.src;
+      img.style.cursor = "zoom-in";
+      img.addEventListener("click", () => {
+        openLightbox([src], 0, "Customer Feedback");
+      });
+    }
+  });
+</script>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .lightbox.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  .lb-image {
+    max-width: 88vw;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 12px;
+    user-select: none;
+    animation: lbFadeIn 0.3s ease;
+  }
+
+  @keyframes lbFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .lb-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+  .lb-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .lb-prev,
+  .lb-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 22px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+  }
+
+  .lb-prev:hover,
+  .lb-next:hover {
+    background: rgba(212, 166, 79, 0.3);
+    border-color: #D4A64F;
+  }
+
+  .lb-prev { left: 20px; }
+  .lb-next { right: 20px; }
+
+  .lb-caption {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    text-align: center;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+  }
+
+  @media (max-width: 768px) {
+    .lb-prev,
+    .lb-next {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+
+    .lb-prev { left: 10px; }
+    .lb-next { right: 10px; }
+
+    .lb-image {
+      max-width: 94vw;
+      max-height: 70vh;
+    }
+  }
+</style>

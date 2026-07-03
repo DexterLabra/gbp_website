@@ -1,0 +1,78 @@
+---
+---
+
+<div class="intro-screen" id="intro">
+  <h1>GBP Home Art & Decors</h1>
+  <p>Luxury • Elegant • Premium</p>
+</div>
+
+<script>
+  setTimeout(() => {
+    const intro = document.getElementById('intro');
+    if (intro) intro.classList.add('intro-hide');
+  }, 2200);
+</script>
+
+<style>
+  .intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: radial-gradient(circle at center, #1b245f, #08114D 60%, #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .intro-screen h1 {
+    font-size: clamp(1.6rem, 6vw, 3rem);
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+    animation: v10logo 5s ease forwards;
+  }
+
+  .intro-screen p {
+    opacity: 0;
+    animation: v10tag 5s ease forwards;
+    color: #FFD978;
+    font-size: 0.9rem;
+  }
+
+  .intro-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255, 217, 120, .25), transparent);
+    animation: sweep 4s linear infinite;
+  }
+
+  .intro-hide {
+    animation: fadeOutIntro 1s forwards;
+  }
+
+  @keyframes v10logo {
+    0% { opacity: 0; transform: scale(.6); }
+    40% { opacity: 1; transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes v10tag {
+    0%, 45% { opacity: 0; }
+    70% { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes sweep {
+    from { transform: translateX(-120%); }
+    to { transform: translateX(120%); }
+  }
+
+  @keyframes fadeOutIntro {
+    to { opacity: 0; visibility: hidden; }
+  }
+</style>
