@@ -356,10 +356,10 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
         variantSliderKey: "balloonDog",
         variants: [
-            { img: "/images/DOG.png", color: "Mirror Chrome Magenta", desc: "" },
-            { img: "/images/DOG.png", color: "Chrome Gold", desc: "" },
-            { img: "/images/DOG.png", color: "Chrome Silver", desc: "" },
-            { img: "/images/DOG.png", color: "Chrome Blue", desc: "" },
+            { img: "/images/DOG.png", color: "White, Black, Gold", desc: "" },
+            { img: "/images/DOG_WHITE.png", color: "White", desc: "" },
+            { img: "/images/DOG_BLACK.png", color: "Black", desc: "" },
+            { img: "/images/DOG_GOLD.png", color: "Gold", desc: "" },
         ],
     },
     {
@@ -399,11 +399,11 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
         variantSliderKey: "knightWarrior",
         variants: [
-            { img: "/images/KNIGHT.png", color: "Silver Armour", desc: "" },
-            { img: "/images/KNIGHT.png", color: "Gold Armour", desc: "" },
-            { img: "/images/KNIGHT.png", color: "Bronze Armour", desc: "" },
-            { img: "/images/KNIGHT.png", color: "Black Armour", desc: "" },
-            { img: "/images/KNIGHT.png", color: "Red Armour", desc: "" },
+            { img: "/images/KNIGHT.png", color: "Knight A, B, C, D", desc: "" },
+            { img: "/images/KNIGHT_A.png", color: "Silver Armour", desc: "" },
+            { img: "/images/KNIGHT_B.png", color: "Gold Armour", desc: "" },
+            { img: "/images/KNIGHT_C.png", color: "Bronze Armour", desc: "" },
+            { img: "/images/KNIGHT_D.png", color: "Black Armour", desc: "" },
         ],
     },
     {
