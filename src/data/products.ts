@@ -400,10 +400,10 @@ export const products: Product[] = [
         variantSliderKey: "knightWarrior",
         variants: [
             { img: "/images/KNIGHT.png", color: "Knight A, B, C, D", desc: "" },
-            { img: "/images/KNIGHT_A.png", color: "Silver Armour", desc: "" },
-            { img: "/images/KNIGHT_B.png", color: "Gold Armour", desc: "" },
-            { img: "/images/KNIGHT_C.png", color: "Bronze Armour", desc: "" },
-            { img: "/images/KNIGHT_D.png", color: "Black Armour", desc: "" },
+            { img: "/images/KNIGHT_A.png", color: "Knight - A (Silver Armour)", desc: "" },
+            { img: "/images/KNIGHT_B.png", color: "Knight - B (Gold Armour)", desc: "" },
+            { img: "/images/KNIGHT_C.png", color: "Knight - C (Bronze Armour)", desc: "" },
+            { img: "/images/KNIGHT_D.png", color: "Knight - D (Black Armour)", desc: "" },
         ],
     },
     {
@@ -452,10 +452,9 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
         variantSliderKey: "footballPlayer",
         variants: [
-            { img: "/images/FOOTBALL.png", color: "Metallic Silver", desc: "" },
-            { img: "/images/FOOTBALL.png", color: "Gold", desc: "" },
-            { img: "/images/FOOTBALL.png", color: "Black", desc: "" },
-            { img: "/images/FOOTBALL.png", color: "White", desc: "" },
+            { img: "/images/FOOTBALL_A.png", color: "Football Player - B (Gold/Red)", desc: "" },
+            { img: "/images/FOOTBALL_B.png", color: "Football Player - C (Gold/Red)", desc: "" },
+            { img: "/images/FOOTBALL_C.png", color: "Football Player - D (Gold/Red)", desc: "" },
         ],
     },
     {
