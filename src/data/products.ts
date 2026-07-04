@@ -322,10 +322,10 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
         variantSliderKey: "wineHolder",
         variants: [
-            { img: "/images/WINE.jpg", color: "Crimson Red", desc: "" },
-            { img: "/images/WINE.jpg", color: "Midnight Black", desc: "" },
-            { img: "/images/WINE.jpg", color: "Royal Gold", desc: "" },
-            { img: "/images/WINE.jpg", color: "Pearl White", desc: "" },
+            { img: "/images/WINE_ASSORTED.png", color: "Red, Gold, Blue", desc: "" },
+            { img: "/images/WINE_RED.png", color: "Red", desc: "" },
+            { img: "/images/WINE_GOLD.png", color: "Gold", desc: "" },
+            { img: "/images/WINE_BLUE.png", color: "Blue", desc: "" },
         ],
     },
     {
