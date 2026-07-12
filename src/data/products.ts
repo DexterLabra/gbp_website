@@ -577,14 +577,13 @@ export const products: Product[] = [
         name: "Elegant Metal Butterfly Shadow Candle",
         category: "candle",
         image: "/images/BUTTERFLY.png",
-        size: "15 x 20 inches",
-        price: "₱799",
+        size: "A: 9cm dia x 25.2cm H \n|  B: 9cm dia x 29.4cm H",
+        price: "A: ₱650 | B: 750 ",
         orderUrl: ORDER_URL,
         variantSliderKey: "butterflyShadow",
         variants: [
             { img: "/images/BUTTERFLY.png", color: "Polished Brass", desc: "" },
-            { img: "/images/BUTTERFLY.png", color: "Midnight Noir", desc: "" },
-            { img: "/images/BUTTERFLY.png", color: "Rose Gold", desc: "" },
+            
         ],
     },
     {
