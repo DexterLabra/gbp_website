@@ -1,0 +1,380 @@
+---
+import { featuredProducts } from '../data/featured';
+---
+
+<section id="featured" class="featured-section">
+  <h2 class="section-title">FEATURED PRODUCTS</h2>
+
+  <div class="featured-container">
+    <!-- Left: Large product image with name overlay -->
+    <div class="featured-image-wrapper">
+      <img
+        id="featured-main-image"
+        src={featuredProducts[0].image}
+        alt={featuredProducts[0].name}
+        class="featured-image"
+      />
+      <span id="featured-image-name" class="featured-image-name">{featuredProducts[0].name}</span>
+    </div>
+
+    <!-- Right: Product info + carousel -->
+    <div class="featured-details">
+      <div class="featured-info">
+        <span id="featured-category" class="featured-category">{featuredProducts[0].category}</span>
+        <h3 id="featured-title" class="featured-title">{featuredProducts[0].name}</h3>
+        <p id="featured-price" class="featured-price">{featuredProducts[0].price}</p>
+      </div>
+
+      <div class="carousel-wrapper">
+        <button class="carousel-nav carousel-prev" aria-label="Previous items">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <div class="featured-carousel">
+          <div class="carousel-track">
+            {featuredProducts.map((product, index) => (
+              <button
+                class={`carousel-item ${index === 0 ? 'active' : ''}`}
+                data-index={index}
+                data-name={product.name}
+                data-category={product.category}
+                data-price={product.price}
+                data-image={product.image}
+                aria-label={`View ${product.name}`}
+              >
+                <img src={product.image} alt={product.name} class="carousel-thumb" />
+                <span class="carousel-item-name">{product.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button class="carousel-nav carousel-next" aria-label="Next items">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector<HTMLDivElement>('.carousel-track')!;
+    const carousel = document.querySelector<HTMLDivElement>('.featured-carousel')!;
+    const carouselItems = document.querySelectorAll<HTMLButtonElement>('.carousel-item');
+    const prevBtn = document.querySelector<HTMLButtonElement>('.carousel-prev')!;
+    const nextBtn = document.querySelector<HTMLButtonElement>('.carousel-next')!;
+    const mainImage = document.getElementById('featured-main-image') as HTMLImageElement;
+    const imageName = document.getElementById('featured-image-name') as HTMLSpanElement;
+    const title = document.getElementById('featured-title') as HTMLHeadingElement;
+    const category = document.getElementById('featured-category') as HTMLSpanElement;
+    const price = document.getElementById('featured-price') as HTMLParagraphElement;
+
+    const ITEM_WIDTH = 132; // 120px width + 12px gap
+
+    function selectItem(item: HTMLButtonElement) {
+      carouselItems.forEach((el) => el.classList.remove('active'));
+      item.classList.add('active');
+
+      const newImage = item.dataset.image || '';
+      const newName = item.dataset.name || '';
+      const newCategory = item.dataset.category || '';
+      const newPrice = item.dataset.price || '';
+
+      mainImage.src = newImage;
+      mainImage.alt = newName;
+      imageName.textContent = newName;
+      title.textContent = newName;
+      category.textContent = newCategory;
+      price.textContent = newPrice;
+    }
+
+    carouselItems.forEach((item) => {
+      item.addEventListener('click', () => selectItem(item));
+    });
+
+    // Infinite scroll: when reaching the end, loop back
+    prevBtn.addEventListener('click', () => {
+      const scrollLeft = carousel.scrollLeft;
+      if (scrollLeft <= 0) {
+        // Jump to end
+        carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: -ITEM_WIDTH * 2, behavior: 'smooth' });
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (carousel.scrollLeft >= maxScroll - 2) {
+        // Loop back to start
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: ITEM_WIDTH * 2, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+<style>
+  .featured-section {
+    padding: 80px 5% 100px;
+    background: #fafafa;
+  }
+
+  .section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 45px;
+    margin: 0 0 50px;
+    color: #111D7A;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 3px;
+    margin: 15px auto 0;
+    background: linear-gradient(to right, #D4A64F, #FFD978, #D4A64F);
+  }
+
+  .featured-container {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  /* Left side: image with overlay name */
+  .featured-image-wrapper {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #f0f0f0;
+  }
+
+  .featured-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .featured-image-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  }
+
+  /* Right side: info + carousel */
+  .featured-details {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-width: 0;
+  }
+
+  .featured-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .featured-category {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #D4A64F;
+  }
+
+  .featured-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #111D7A;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .featured-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin: 4px 0 0;
+  }
+
+  /* Carousel wrapper with nav buttons */
+  .carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .carousel-nav {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #ddd;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #333;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+  }
+
+  .carousel-nav:hover {
+    border-color: #D4A64F;
+    background: rgba(212, 166, 79, 0.08);
+    color: #D4A64F;
+  }
+
+  /* Carousel scroll area */
+  .featured-carousel {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+  }
+
+  .featured-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 12px;
+    padding: 6px 4px;
+  }
+
+  .carousel-item {
+    flex: 0 0 auto;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .carousel-item:hover {
+    border-color: #D4A64F;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .carousel-item.active {
+    border-color: #D4A64F;
+    box-shadow: 0 4px 16px rgba(212, 166, 79, 0.3);
+    background: rgba(212, 166, 79, 0.06);
+  }
+
+  .carousel-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f5f5f5;
+  }
+
+  .carousel-item-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Tablet: stack to single column */
+  @media (max-width: 1024px) {
+    .featured-container {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .featured-image-wrapper {
+      aspect-ratio: 4 / 3;
+    }
+
+    .featured-title {
+      font-size: 24px;
+    }
+
+    .featured-price {
+      font-size: 20px;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .featured-section {
+      padding: 60px 4% 80px;
+    }
+
+    .section-title {
+      font-size: 32px;
+    }
+
+    .featured-container {
+      max-width: 100%;
+      gap: 20px;
+    }
+
+    .featured-image-wrapper {
+      aspect-ratio: 4 / 3;
+      border-radius: 12px;
+    }
+
+    .featured-image-name {
+      font-size: 16px;
+      padding: 16px 18px;
+    }
+
+    .featured-title {
+      font-size: 20px;
+    }
+
+    .featured-price {
+      font-size: 18px;
+    }
+
+    .carousel-item {
+      width: 100px;
+    }
+
+    .carousel-item-name {
+      font-size: 10px;
+    }
+
+    .carousel-nav {
+      width: 30px;
+      height: 30px;
+    }
+  }
+</style>

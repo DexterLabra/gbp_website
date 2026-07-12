@@ -1,4 +1,12 @@
 ---
+const navLinks = [
+  { href: "#", text: "Home" },
+  { href: "#featured", text: "Featured Products" },
+  { href: "#collections", text: "Collections" },
+  { href: "#shipping", text: "Shipping" },
+  { href: "#testimonials", text: "Client Feedback" },
+  { href: "#contact", text: "Contact" },
+];
 ---
 
 <section class="hero" id="hero">
@@ -8,6 +16,15 @@
       We curate and provide functional and creative decor pieces that bring warmth, character, and elegance to every home. ✨
     </p>
 
+    <nav id="hero-nav" aria-label="Primary navigation" class="hero-nav">
+      <ul>
+        {navLinks.map((link) => (
+          <li>
+            <a class="hero-nav-link" href={link.href}>{link.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   </div>
 </section>
 
@@ -81,11 +98,60 @@
     backdrop-filter: blur(10px);
   }
 
+  .hero-nav {
+    margin-top: 34px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 
+  .hero-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 900px;
+  }
+
+  .hero-nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .hero-nav-link:hover,
+  .hero-nav-link:focus {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-nav-link.active {
+    background: rgba(212, 166, 79, 0.18);
+    border-color: #D4A64F;
+    color: #FFD978;
+  }
 
   @media (max-width: 768px) {
     .hero {
       min-height: 100vh;
+    }
+
+    .hero-content {
+      padding: 0 12px;
     }
 
     .hero h2 {
@@ -96,11 +162,34 @@
       font-size: 16px;
       padding: 18px;
     }
+
+    .hero-nav {
+      margin-top: 28px;
+    }
+
+    .hero-nav ul {
+      gap: 10px;
+    }
+
+    .hero-nav-link {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
   }
 
   @media (max-width: 500px) {
     .hero h2 {
       font-size: 34px;
+    }
+
+    .hero-nav ul {
+      justify-content: center;
+    }
+
+    .hero-nav-link {
+      flex: 1 1 100%;
+      max-width: 100%;
+      border-radius: 999px;
     }
   }
 </style>

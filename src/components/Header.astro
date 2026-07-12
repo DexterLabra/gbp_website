@@ -1,11 +1,4 @@
 ---
-const navLinks = [
-  { href: "#", text: "Home" },
-  { href: "#collections", text: "Collections" },
-  { href: "#shipping", text: "Shipping" },
-  { href: "#testimonials", text: "Client Feedback" },
-  { href: "#contact", text: "Contact" },
-];
 ---
 
 <div class="header-wrapper">
@@ -22,94 +15,52 @@ const navLinks = [
       <span class="header-name">GBP Home Art & Decors</span>
     </a>
 
-    <button
-      id="menu-button"
-      type="button"
-      class="hamburger"
-      aria-expanded="false"
-      aria-controls="main-menu"
-      aria-label="Toggle menu"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" fill="currentColor">
-        <path d="M128 102.4c0-14.138 11.462-25.6 25.6-25.6h332.8c14.138 0 25.6 11.462 25.6 25.6S500.538 128 486.4 128H153.6c-14.138 0-25.6-11.463-25.6-25.6zm358.4 128H25.6C11.462 230.4 0 241.863 0 256c0 14.138 11.462 25.6 25.6 25.6h460.8c14.138 0 25.6-11.462 25.6-25.6 0-14.137-11.462-25.6-25.6-25.6zm0 153.6H256c-14.137 0-25.6 11.462-25.6 25.6 0 14.137 11.463 25.6 25.6 25.6h230.4c14.138 0 25.6-11.463 25.6-25.6 0-14.138-11.462-25.6-25.6-25.6z" />
-      </svg>
+    <button id="scroll-top-button" type="button" class="scroll-top-button" aria-label="Scroll back to top">
+      ↑ Top
     </button>
-
-    <nav id="main-menu" class="nav-menu">
-      <ul>
-        {navLinks.map((link) => (
-          <li>
-            <a class="nav-item" href={link.href}>{link.text}</a>
-          </li>
-        ))}
-      </ul>
-    </nav>
   </header>
 </div>
 
 <script>
-  const menuButton = document.getElementById("menu-button");
-  const mainMenu = document.getElementById("main-menu");
   const headerName = document.querySelector(".header-name");
-  const navItems = document.querySelectorAll<HTMLAnchorElement>("#main-menu ul li a");
+  const scrollTopButton = document.getElementById("scroll-top-button");
 
-  // Toggle mobile menu
-  menuButton?.addEventListener("click", () => {
-    const isOpen = mainMenu?.classList.contains("open");
-    if (isOpen) {
-      mainMenu?.classList.remove("open");
-      menuButton.setAttribute("aria-expanded", "false");
-    } else {
-      mainMenu?.classList.add("open");
-      menuButton.setAttribute("aria-expanded", "true");
-    }
-  });
-
-  // Close menu on nav click
-  navItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      mainMenu?.classList.remove("open");
-      menuButton?.setAttribute("aria-expanded", "false");
-    });
-  });
-
-  // Show brand name on scroll past hero
   const handleScroll = () => {
     const heroSection = document.querySelector(".hero");
-    if (heroSection && headerName) {
-      const heroBottom = heroSection.getBoundingClientRect().bottom;
+    const heroBottom = heroSection?.getBoundingClientRect().bottom ?? 0;
+
+    if (headerName) {
       if (heroBottom < 100) {
         headerName.classList.add("visible");
       } else {
         headerName.classList.remove("visible");
       }
     }
+
+    if (scrollTopButton) {
+      if (heroBottom < 0) {
+        scrollTopButton.classList.add("visible");
+      } else {
+        scrollTopButton.classList.remove("visible");
+      }
+    }
   };
 
-  window.addEventListener("scroll", handleScroll);
-  handleScroll();
-
-  // Highlight active nav based on scroll position
-  const sections = document.querySelectorAll<HTMLElement>("section[id]");
-
-  function updateActiveNav() {
+  const updateActiveNav = () => {
+    const navItems = document.querySelectorAll<HTMLAnchorElement>("#hero-nav ul li a");
+    const sections = document.querySelectorAll<HTMLElement>("section[id]");
     let currentId = "";
 
-    // If at the bottom of the page, highlight the last section
     const atBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 50);
     if (atBottom && sections.length > 0) {
       currentId = sections[sections.length - 1].id;
     } else if (window.scrollY < 100) {
       currentId = "";
     } else {
-      // Find the section with the most overlap in the viewport
       let bestOverlap = 0;
-
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-
-        // Calculate how much of the section is visible
         const top = Math.max(0, rect.top);
         const bottom = Math.min(viewportHeight, rect.bottom);
         const overlap = Math.max(0, bottom - top);
@@ -133,10 +84,20 @@ const navLinks = [
         item.classList.remove("active");
       }
     });
-  }
+  };
 
-  window.addEventListener("scroll", updateActiveNav, { passive: true });
-  updateActiveNav();
+  document.addEventListener("DOMContentLoaded", () => {
+    if (scrollTopButton) {
+      scrollTopButton.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    handleScroll();
+    updateActiveNav();
+  });
 </script>
 
 <style>
@@ -200,91 +161,49 @@ const navLinks = [
     opacity: 1;
   }
 
-  .hamburger {
-    display: none;
-    background: none;
+  .scroll-top-button {
+    margin-left: auto;
     border: none;
-    color: #fff;
+    border-radius: 999px;
+    background: rgba(212, 166, 79, 0.95);
+    color: #10235e;
+    font-weight: 700;
+    padding: 11px 18px;
     cursor: pointer;
-    padding: 6px;
-  }
-
-  .nav-menu {
-    display: block;
-  }
-
-  .nav-menu ul {
-    display: flex;
-    gap: 4px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .nav-item {
-    position: relative;
-    display: block;
-    padding: 8px 14px;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-
-  .nav-item::after {
-    content: '•';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #D4A64F;
     opacity: 0;
-    transition: opacity 0.3s;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 8px 24px rgba(17, 29, 122, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
   }
 
-  .nav-item:hover,
-  .nav-item:global(.active) {
-    color: #fff;
-  }
-
-  .nav-item:global(.active)::after {
+  .scroll-top-button.visible {
     opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .scroll-top-button:hover,
+  .scroll-top-button:focus-visible {
+    box-shadow: 0 14px 32px rgba(17, 29, 122, 0.2);
+    outline: none;
   }
 
   @media (max-width: 768px) {
-    header {
-      padding: 12px 16px;
-    }
-
-    .hamburger {
-      display: block;
-    }
-
-    .nav-menu {
-      display: none;
-      position: absolute;
-      top: 72px;
-      right: 16px;
-      background: rgba(17, 29, 122, 0.97);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    .nav-menu:global(.open) {
-      display: block;
-    }
-
-    .nav-menu ul {
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .nav-item {
+    .scroll-top-button {
       padding: 10px 16px;
-      font-size: 15px;
+      height: 40px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .scroll-top-button {
+      padding: 10px 14px;
+      height: 38px;
     }
   }
 </style>
