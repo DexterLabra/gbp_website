@@ -16,7 +16,7 @@ export interface Product {
     variantSliderKey?: string;
 }
 
-const ORDER_URL = "https://www.messenger.com/t/569924182875456";
+const ORDER_URL = "https://www.messenger.com/t/569924182875456"; 
 
 export const categories = [
     { value: "all", label: "All Products" },
