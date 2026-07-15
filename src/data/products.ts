@@ -698,7 +698,7 @@ export const products: Product[] = [
         name: "Luxury Pegasus Decor Statue (Black)",
         category: "figurines",
         image: "/images/HORSEBLACK.png",
-        size: "38cm L x 20cm W x 62cm H | approx. 6.7 kgs",
+        size: "38cm L x 20cm W x 62cm H | approx. 6.7 kgs", 
         price: "₱11,250",
         orderUrl: ORDER_URL,
     },
@@ -712,7 +712,7 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
     },
     {
-        id: "stag-black-pair",
+        id: "stag-black-pair",  
         name: "The Stag Deer Guardian of the Forest Statue (Sitting and Standing) - Black",
         category: "figurines",
         image: "/images/STAGBLACK.png",
