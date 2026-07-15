@@ -1,0 +1,162 @@
+---
+---
+
+<div class="messenger-wrapper">
+  <div class="messenger-bubble" id="messenger-bubble">
+    Connect with us on Facebook Messenger
+  </div>
+  <a
+    href="https://www.messenger.com/t/569924182875456"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="messenger-btn"
+    aria-label="Chat with us on Messenger"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.092.301 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8.2l3.131 3.26 5.886-3.26-6.558 6.763z"/></svg>
+  </a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const bubble = document.getElementById('messenger-bubble') as HTMLDivElement;
+
+    const SHOW_DELAY = 7000;
+    const VISIBLE_DURATION = 5000;
+
+    let showTimeout: ReturnType<typeof setTimeout>;
+    let hideTimeout: ReturnType<typeof setTimeout>;
+
+    function showBubble() {
+      bubble.classList.add('visible');
+      // Nudge the button
+      const btn = document.querySelector('.messenger-btn') as HTMLElement;
+      btn.classList.add('nudge');
+      btn.addEventListener('animationend', () => btn.classList.remove('nudge'), { once: true });
+
+      hideTimeout = setTimeout(() => {
+        bubble.classList.remove('visible');
+        scheduleShow();
+      }, VISIBLE_DURATION);
+    }
+
+    function scheduleShow() {
+      clearTimeout(showTimeout);
+      clearTimeout(hideTimeout);
+      showTimeout = setTimeout(showBubble, SHOW_DELAY);
+    }
+
+    function dismissBubble() {
+      bubble.classList.remove('visible');
+      clearTimeout(hideTimeout);
+      scheduleShow();
+    }
+
+    bubble.addEventListener('click', (e) => {
+      e.preventDefault();
+      dismissBubble();
+    });
+
+    // Start the first cycle
+    scheduleShow();
+  });
+</script>
+
+<style>
+  .messenger-wrapper {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .messenger-bubble {
+    position: relative;
+    background: #fff;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    max-width: 200px;
+    text-align: center;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .messenger-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fff;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.06));
+  }
+
+  .messenger-bubble.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .messenger-btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #0084FF;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 132, 255, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+  }
+
+  .messenger-btn.nudge {
+    animation: nudge 0.5s ease;
+  }
+
+  @keyframes nudge {
+    0%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-6px); }
+    40% { transform: translateY(3px); }
+    60% { transform: translateY(-3px); }
+    80% { transform: translateY(1px); }
+  }
+
+  .messenger-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 132, 255, 0.5);
+  }
+
+  @media (max-width: 600px) {
+    .messenger-wrapper {
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .messenger-btn {
+      width: 48px;
+      height: 48px;
+    }
+
+    .messenger-bubble {
+      font-size: 12px;
+      max-width: 180px;
+    }
+  }
+</style>
