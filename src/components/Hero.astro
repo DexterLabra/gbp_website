@@ -14,11 +14,11 @@ const navLinks = [
   <div class="hero-content">
     <div class="hero-brand">
       <img
-        src="/images/GBP LOGO.png"
-        alt="GBP Home Art & Decors logo"
+        src="/images/GBP_OFFICIAL_LOGO.png"
+        alt="GBP Home Art & Decors official logo"
         class="hero-logo"
-        width="132"
-        height="132"
+        width="240"
+        height="240"
         loading="eager"
         decoding="async"
       />
@@ -42,18 +42,30 @@ const navLinks = [
 
 <style>
   .hero {
-    min-height: 75vh;
+    min-height: 82vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(17, 29, 122, 0.85), rgba(17, 29, 122, 0.85)),
-      url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1500');
+    background: linear-gradient(180deg, rgba(7, 12, 38, 0.92), rgba(15, 24, 94, 0.64)),
+      url('/images/GBP_HERO_BG.png');
+    background-blend-mode: multiply;
     background-size: cover;
-    background-position: center;
+    background-position: center center;
+    background-repeat: no-repeat;
     padding: 60px 20px;
     position: relative;
     overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 15% 20%, rgba(255, 221, 136, 0.18), transparent 20%),
+      radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.12), transparent 18%);
+    pointer-events: none;
+    mix-blend-mode: screen;
   }
 
   .hero::after {
@@ -86,11 +98,28 @@ const navLinks = [
   }
 
   .hero-logo {
-    width: clamp(96px, 13vw, 132px);
+    width: clamp(220px, 22vw, 320px);
     height: auto;
     display: block;
     object-fit: contain;
-    border-radius: 20px;
+    background: transparent;
+    transition: transform 0.35s ease, filter 0.35s ease;
+    animation: glowPulse 7s ease-in-out infinite;
+    filter: brightness(1.02) drop-shadow(0 0 28px rgba(255, 215, 0, 0.24));
+  }
+
+  .hero-logo:hover {
+    transform: scale(1.06) rotate(-0.5deg);
+    filter: brightness(1.1) drop-shadow(0 0 38px rgba(255, 215, 0, 0.32));
+  }
+
+  @keyframes glowPulse {
+    0%, 100% {
+      filter: brightness(1.02) drop-shadow(0 0 28px rgba(255, 215, 0, 0.24));
+    }
+    50% {
+      filter: brightness(1.05) drop-shadow(0 0 36px rgba(255, 215, 0, 0.28));
+    }
   }
 
   @keyframes grandEntrance {
@@ -116,14 +145,41 @@ const navLinks = [
   }
 
   .bio {
-    font-size: 23px;
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.55rem, 2vw, 2.35rem);
     line-height: 1.8;
-    font-weight: 600;
-    color: #FFD978;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 25px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
+    font-weight: 500;
+    color: #F6E7B8;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 2px rgba(8, 14, 45, 0.18);
+    background: linear-gradient(180deg, rgba(255, 250, 239, 0.24), rgba(255, 244, 226, 0.14));
+    border: 1px solid rgba(212, 166, 79, 0.22);
+    padding: 32px 34px;
+    border-radius: 32px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 24px 74px rgba(15, 23, 75, 0.16);
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: bioGlow 9s ease-in-out infinite alternate;
+  }
+
+  .bio:hover {
+    transform: translateY(-4px) scale(1.01);
+    background: linear-gradient(180deg, rgba(255, 251, 238, 0.34), rgba(255, 245, 229, 0.18));
+    border-color: rgba(212, 166, 79, 0.36);
+    box-shadow: 0 30px 90px rgba(15, 23, 75, 0.22);
+  }
+
+  @keyframes bioGlow {
+    0% {
+      box-shadow: 0 22px 68px rgba(15, 23, 75, 0.14);
+      transform: translateY(0);
+    }
+    100% {
+      box-shadow: 0 30px 90px rgba(15, 23, 75, 0.18);
+      transform: translateY(-2px);
+    }
   }
 
   .hero-nav {
@@ -187,7 +243,7 @@ const navLinks = [
     }
 
     .hero-logo {
-      width: clamp(84px, 20vw, 110px);
+      width: clamp(180px, 30vw, 220px);
     }
 
     .bio {
@@ -215,7 +271,7 @@ const navLinks = [
     }
 
     .hero-logo {
-      width: clamp(74px, 24vw, 94px);
+      width: clamp(160px, 40vw, 200px);
     }
 
     .hero-nav ul {
