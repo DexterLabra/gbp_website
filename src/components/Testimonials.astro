@@ -169,8 +169,10 @@ const extendedItems = [
   .testimonials-section {
     padding: 120px 5%;
     min-height: 80vh;
-    background: linear-gradient(180deg, #faf8f4, #fffdf9);
+    background: linear-gradient(180deg, var(--page-bg), var(--surface-alt));
+    color: var(--page-text);
     overflow: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   .section-title {
@@ -178,7 +180,7 @@ const extendedItems = [
     font-family: 'Playfair Display', serif;
     font-size: 45px;
     margin: 0 0 20px;
-    color: #111D7A;
+    color: var(--heading-color);
   }
 
   .section-title::after {
@@ -233,12 +235,13 @@ const extendedItems = [
 
   .testimonial-card {
     border-radius: 24px;
-    background: #fff;
+    background: var(--glass-bg);
     padding: 10px;
-    border: 1px solid rgba(212, 166, 79, 0.25);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 16px 42px var(--glass-shadow);
     overflow: hidden;
-    transition: box-shadow 0.6s ease, border-color 0.6s ease;
+    backdrop-filter: blur(18px);
+    transition: box-shadow 0.6s ease, border-color 0.6s ease, background-color 0.4s ease;
   }
 
   .carousel-slide:global(.is-center) .testimonial-card {
@@ -263,23 +266,23 @@ const extendedItems = [
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 1px solid rgba(212, 166, 79, 0.3);
-    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+    background: var(--surface);
     backdrop-filter: blur(8px);
-    color: #111D7A;
+    color: var(--heading-color);
     font-size: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 0.3s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 18px var(--shadow-color);
   }
 
   .carousel-arrow:hover {
-    background: #D4A64F;
-    color: #fff;
-    border-color: #D4A64F;
+    background: var(--accent);
+    color: var(--button-text);
+    border-color: var(--accent);
     transform: translateY(-50%) scale(1.1);
   }
 
@@ -298,13 +301,13 @@ const extendedItems = [
     height: 12px;
     border-radius: 50%;
     border: none;
-    background: #d8d8d8;
+    background: var(--border-color);
     cursor: pointer;
     transition: 0.4s;
   }
 
   .dot.active {
-    background: #D4A64F;
+    background: var(--accent);
     transform: scale(1.3);
   }
 

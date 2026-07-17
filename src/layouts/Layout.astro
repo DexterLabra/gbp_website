@@ -27,6 +27,52 @@ const { title } = Astro.props;
 </html>
 
 <style is:global>
+  :root {
+    color-scheme: light;
+    --page-bg: #faf8f4;
+    --page-text: #222;
+    --muted-text: #5e5b54;
+    --heading-color: #111D7A;
+    --accent: #D4A64F;
+    --accent-strong: #FFD978;
+    --surface: #ffffff;
+    --surface-alt: #f6f1e8;
+    --surface-strong: #fdfcf8;
+    --surface-ink: #111D7A;
+    --border-color: rgba(17, 29, 122, 0.12);
+    --shadow-color: rgba(17, 29, 122, 0.08);
+    --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(246, 241, 232, 0.68));
+    --glass-border: rgba(255, 255, 255, 0.46);
+    --glass-shadow: rgba(15, 23, 75, 0.14);
+    --button-text: #10235e;
+    --input-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 225, 0.95));
+    --input-text: #2f2a22;
+    --input-placeholder: #8f8878;
+  }
+
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+    --page-bg: #07111f;
+    --page-text: #f3f6ff;
+    --muted-text: #bfc8dd;
+    --heading-color: #f3d79a;
+    --accent: #f3d79a;
+    --accent-strong: #ffd978;
+    --surface: #10182b;
+    --surface-alt: #152238;
+    --surface-strong: #0f1729;
+    --surface-ink: #f8e7b4;
+    --border-color: rgba(255, 255, 255, 0.14);
+    --shadow-color: rgba(0, 0, 0, 0.32);
+    --glass-bg: linear-gradient(135deg, rgba(16, 24, 43, 0.8), rgba(21, 34, 56, 0.72));
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-shadow: rgba(0, 0, 0, 0.34);
+    --button-text: #fef6d7;
+    --input-bg: linear-gradient(135deg, rgba(15, 23, 41, 0.98), rgba(24, 35, 59, 0.94));
+    --input-text: #f8fbff;
+    --input-placeholder: #90a0bf;
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -39,10 +85,25 @@ const { title } = Astro.props;
 
   body {
     font-family: 'Poppins', sans-serif;
-    background: #faf8f4;
-    color: #222;
+    background: var(--page-bg);
+    color: var(--page-text);
     overflow-x: hidden;
     animation: pageIn 0.8s ease;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  body.dark-mode {
+    background: var(--page-bg);
+    color: var(--page-text);
+  }
+
+  select,
+  option {
+    color: var(--page-text);
+  }
+
+  option {
+    background: var(--surface);
   }
 
   @keyframes pageIn {

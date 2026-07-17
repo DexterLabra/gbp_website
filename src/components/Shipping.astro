@@ -2,34 +2,39 @@
 ---
 
 <section class="shipping-section" id="shipping">
-  <h2 class="section-title">Delivery & Shipping Options</h2>
-  <div class="shipping-grid">
-    <div class="shipping-card">
-      <h3>Same-Day Delivery</h3>
-      <div class="shipping-logos">
-        <img loading="lazy" decoding="async" src="/assets/image(39).png" alt="Lalamove" width="90" height="90" />
-        <img loading="lazy" decoding="async" src="/assets/image(40).png" alt="JoyRide" width="90" height="90" />
-        <img loading="lazy" decoding="async" src="/assets/grab.png" alt="grab" width="10" height="50" />
-        <p> Available via <b> Lalamove, Grab,</b> and <b> JoyRide.</b> </p>
-
-
+  <div class="shipping-shell">
+<h2 class="section-title">Delivery & Shipping Options</h2>
+<div class="shipping-grid">
+  <article class="shipping-card">
+    <h3>Same-Day Delivery</h3>
+    <div class="shipping-logos">
+      <div class="shipping-logo-item">
+        <img loading="lazy" decoding="async" src="/assets/image(39).png" alt="Lalamove" />
+      </div>
+      <div class="shipping-logo-item">
+        <img loading="lazy" decoding="async" src="/assets/image(40).png" alt="JoyRide" />
+      </div>
+      <div class="shipping-logo-item">
+        <img loading="lazy" decoding="async" src="/assets/grab.png" alt="Grab" />
       </div>
     </div>
-    <div class="shipping-card">
-      <h3>Standard Nationwide Shipping</h3>
-      <div class="shipping-logos">
-        <img loading="lazy" decoding="async" src="/assets/image(37).png" alt="Shipping Partner" width="90" height="90" />
-        <img loading="lazy" decoding="async" src="/assets/image(38).png" alt="Shipping Partner" width="90" height="90" />
-      </div>
-      <p>Available via <b> J&T Express, LBC,</b> or your preferred courier.
-      
+    <p>Available via <strong>Lalamove, Grab</strong>, and <strong>JoyRide</strong>.</p>
+  </article>
 
-.</p>
+  <article class="shipping-card">
+    <h3>Standard Nationwide Shipping</h3>
+    <div class="shipping-logos">
+      <div class="shipping-logo-item">
+        <img loading="lazy" decoding="async" src="/assets/image(37).png" alt="J&T Express" />
+      </div>
+      <div class="shipping-logo-item">
+        <img loading="lazy" decoding="async" src="/assets/image(38).png" alt="LBC" />
+      </div>
     </div>
+    <p>Available via <strong>J&T Express, LBC</strong>, or your preferred courier.</p>
+  </article>
+</div>
   </div>
-
-
-  
 </section>
 
 
@@ -39,15 +44,50 @@
   .shipping-section {
     padding: 120px 5%;
     min-height: 80vh;
-    background: linear-gradient(135deg, #ffffff, #f8f3e7);
+    background: linear-gradient(135deg, var(--surface-strong) 0%, var(--surface-alt) 42%, var(--page-bg) 100%);
+    color: var(--page-text);
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  .shipping-section::before,
+  .shipping-section::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(2px);
+  }
+
+  .shipping-section::before {
+    inset: auto auto -120px -80px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(212, 166, 79, 0.18), transparent 70%);
+  }
+
+  .shipping-section::after {
+    inset: -60px -80px auto auto;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(17, 29, 122, 0.12), transparent 70%);
+  }
+
+  .shipping-shell {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .section-title {
     text-align: center;
     font-family: 'Playfair Display', serif;
-    font-size: 45px;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
     margin: 0 0 50px;
-    color: #111D7A;
+    color: var(--heading-color);
+    letter-spacing: 0.02em;
   }
 
   .section-title::after {
@@ -61,72 +101,168 @@
 
   .shipping-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 30px;
-    max-width: 1200px;
-    margin: auto;
   }
 
   .shipping-card {
-    background: #fff;
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(212, 166, 79, 0.25);
-    transition: 0.4s;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 32px 28px;
+    box-shadow: 0 24px 60px var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background-color 0.35s ease;
+    position: relative;
+    overflow: hidden;
+    animation: cardReveal 0.7s ease both;
+  }
+
+  .shipping-card:nth-child(2) {
+    animation-delay: 0.1s;
   }
 
   .shipping-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 25px 50px rgba(212, 166, 79, 0.25);
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 30px 80px rgba(17, 29, 122, 0.13);
+    border-color: rgba(212, 166, 79, 0.4);
+  }
+
+  .shipping-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+  }
+
+  .shipping-card:hover::before {
+    transform: translateX(120%);
   }
 
   .shipping-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    align-items: center;
+    justify-items: center;
+    margin: 24px 0 18px;
+  }
+
+  .shipping-logo-item {
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin: 20px 0;
+    width: min(100%, 140px);
+    aspect-ratio: 1 / 1;
+    padding: 14px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 28px var(--glass-shadow);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    animation: logoReveal 0.7s ease both;
+    backdrop-filter: blur(12px);
+  }
+
+  .shipping-logo-item:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+
+  .shipping-logo-item:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+
+  .shipping-logo-item:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 18px 36px rgba(17, 29, 122, 0.12);
+    border-color: rgba(212, 166, 79, 0.35);
   }
 
   .shipping-logos img {
-    width: 90px;
-    height: 90px;
+    width: 100%;
+    max-width: 112px;
+    height: auto;
     object-fit: contain;
-    transition: 0.4s;
+    transition: transform 0.35s ease, filter 0.35s ease;
   }
 
-  .shipping-logos img:hover {
-    transform: scale(1.1) rotate(3deg);
+  .shipping-logo-item:hover img {
+    transform: scale(1.06) rotate(-1deg);
+    filter: drop-shadow(0 10px 16px rgba(17, 29, 122, 0.12));
   }
 
   .shipping-card h3 {
     text-align: center;
-    color: #111D7A;
-    margin-bottom: 10px;
+    color: var(--heading-color);
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    font-weight: 700;
   }
 
   .shipping-card p {
     text-align: center;
-    font-size: 18px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--muted-text);
+    margin: 0;
   }
 
-  @media (max-width: 768px) {
+  .shipping-card strong {
+    color: var(--accent);
+  }
+
+  @keyframes cardReveal {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes logoReveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (max-width: 900px) {
     .shipping-grid {
       grid-template-columns: 1fr;
     }
+  }
 
-    .shipping-logos img {
-      width: 70px;
-      height: 70px;
+  @media (max-width: 600px) {
+    .shipping-section {
+      padding: 90px 5%;
+    }
+
+    .shipping-card {
+      padding: 24px 18px;
+    }
+
+    .shipping-logos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .shipping-logo-item {
+      width: 100%;
+      min-height: 110px;
     }
 
     .shipping-card p {
-      font-size: 16px;
-    }
-
-    .section-title {
-      font-size: 32px;
+      font-size: 0.95rem;
     }
   }
 </style>

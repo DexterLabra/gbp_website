@@ -12,7 +12,7 @@
     class="messenger-btn"
     aria-label="Chat with us on Messenger"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.092.301 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8.2l3.131 3.26 5.886-3.26-6.558 6.763z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.092.301 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8.2l3.131 3.26 5.886-3.26-6.558 6.763z"/></svg>
   </a>
 </div>
 
@@ -75,21 +75,22 @@
 
   .messenger-bubble {
     position: relative;
-    background: #fff;
-    color: #333;
+    background: var(--surface);
+    color: var(--page-text);
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
     font-weight: 500;
     padding: 10px 16px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
     max-width: 200px;
     text-align: center;
     line-height: 1.4;
     opacity: 0;
     transform: translateY(8px) scale(0.95);
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.35s ease, color 0.35s ease;
     cursor: pointer;
   }
 
@@ -102,7 +103,7 @@
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 8px solid #fff;
+    border-top: 8px solid var(--surface);
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.06));
   }
 
@@ -113,17 +114,24 @@
   }
 
   .messenger-btn {
-    width: 54px;
-    height: 54px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background: #0084FF;
+    background: linear-gradient(135deg, #0084ff 0%, #1e90ff 100%);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px rgba(0, 132, 255, 0.4);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 10px 28px rgba(0, 132, 255, 0.45), 0 0 0 4px rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s ease;
     text-decoration: none;
+    filter: saturate(1.1);
+  }
+
+  .messenger-btn svg {
+    width: 32px;
+    height: 32px;
   }
 
   .messenger-btn.nudge {
@@ -139,8 +147,9 @@
   }
 
   .messenger-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 132, 255, 0.5);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 14px 34px rgba(0, 132, 255, 0.6), 0 0 0 6px rgba(255, 255, 255, 0.35);
+    filter: brightness(1.08);
   }
 
   @media (max-width: 600px) {
@@ -150,8 +159,13 @@
     }
 
     .messenger-btn {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
+    }
+
+    .messenger-btn svg {
+      width: 28px;
+      height: 28px;
     }
 
     .messenger-bubble {

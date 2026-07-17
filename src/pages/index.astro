@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
 import IntroScreen from '../components/IntroScreen.astro';
 import Hero from '../components/Hero.astro';
 import FeaturedProducts from '../components/FeaturedProducts.astro';
@@ -16,6 +17,7 @@ import MessengerButton from '../components/MessengerButton.astro';
 ---
 
 <Layout title="GBP Home Art & Decors">
+  <Header />
   <IntroScreen />
   <Hero />
   <FeaturedProducts />
@@ -44,7 +46,7 @@ import MessengerButton from '../components/MessengerButton.astro';
     font-family: 'Playfair Display', serif;
     font-size: 45px;
     margin: 70px 0 50px;
-    color: #111D7A;
+    color: var(--heading-color);
     opacity: 0;
     transform: translateY(60px);
     transition: 1s;
