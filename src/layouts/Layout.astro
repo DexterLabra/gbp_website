@@ -1,9 +1,13 @@
 ---
+import { inject } from '@vercel/analytics';
+
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+
+inject();
 ---
 
 <!doctype html>
