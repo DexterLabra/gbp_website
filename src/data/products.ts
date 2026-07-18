@@ -67,15 +67,6 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
     },
     {
-        id: "metal-gold-candle",
-        name: "Elegant Metal Candle Holder in Gold",
-        category: "candle",
-        image: "/images/METALGOLD.png",
-        size: "6.6cm dia x 16.5cm H",
-        price: "₱799",
-        orderUrl: ORDER_URL,
-    },
-    {
         id: "thinking",
         name: "Nordic Minimalist Thinking Human Sculpture with Moon Night Lamp",
         category: "lamps",
@@ -93,7 +84,6 @@ export const products: Product[] = [
         price: "₱1,545",
         orderUrl: ORDER_URL,
     },
-
     {
         id: "polar-bear",
         name: "Cute Polar Bear with Trinket and Welcome Tray",
@@ -475,15 +465,6 @@ export const products: Product[] = [
             { img: "/images/FOOTBALL_B.png", color: "Football Player - B (Gold/Red)", desc: "" },
             { img: "/images/FOOTBALL_C.png", color: "Football Player - C (Gold/Red)", desc: "" },
         ],
-    },
-    {
-        id: "crow",
-        name: "Elegant Crow Statue Ornament With Night Lamp",
-        category: "lamps",
-        image: "/images/CROW.png",
-        size: "23.5cm L x 17cm W x 19cm H",
-        price: "₱1,950",
-        orderUrl: ORDER_URL,
     },
     {
         id: "creative-moon",
