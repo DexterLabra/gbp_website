@@ -11,5 +11,8 @@ export const feedbackItems: FeedbackItem[] = [
     { src: "/assets/FEEDBACK 5.png", alt: "Customer Feedback 5" },
     { src: "/assets/FEEDBACK 6.png", alt: "Customer Feedback 6" },
     { src: "/assets/FEEDBACK 7.png", alt: "Customer Feedback 7" },
+    { src: "/assets/FEEDBACK 8.png", alt: "Customer Feedback 8" },
+    { src: "/assets/FEEDBACK 9.png", alt: "Customer Feedback 9" },
+    { src: "/assets/FEEDBACK 10.png", alt: "Customer Feedback 10" },
     
 ];
