@@ -43,6 +43,8 @@ function initVariantSliders() {
         const variants = JSON.parse(variantsData);
         let currentIndex = 0;
 
+        
+
         const img = el.querySelector<HTMLImageElement>('.slider-image');
         const colorLabel = el.querySelector('.variant-color-label');
         const dots = el.querySelectorAll<HTMLElement>('.variant-dot');
