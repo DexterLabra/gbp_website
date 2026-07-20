@@ -3,8 +3,14 @@ function initCategoryFilter() {
     const filter = document.getElementById('categoryFilter') as HTMLSelectElement;
     if (!filter) return;
 
+    const filterWrap = filter.closest('.select-wrap');
+
     filter.addEventListener('change', () => {
         const selected = filter.value;
+        filterWrap?.classList.remove('is-bursting');
+        void filter.offsetWidth;
+        filterWrap?.classList.add('is-bursting');
+
         document.querySelectorAll<HTMLElement>('.products .product').forEach((product) => {
             if (selected === 'all' || product.dataset.category === selected) {
                 product.classList.remove('hide');
@@ -14,6 +20,10 @@ function initCategoryFilter() {
                 product.style.display = 'none';
             }
         });
+
+        window.setTimeout(() => {
+            filterWrap?.classList.remove('is-bursting');
+        }, 750);
     });
 }
 

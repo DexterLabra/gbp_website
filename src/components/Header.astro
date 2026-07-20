@@ -12,8 +12,20 @@
         loading="eager"
         decoding="async"
       />
-      <span class="header-name">GBP Home Art & Decors</span>
     </a>
+
+    <div class="header-notice" aria-label="Cash on delivery available nationwide">
+      <span class="header-notice-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 12v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7" />
+          <path d="M21 7H3v5h18V7Z" />
+          <path d="M12 20V7" />
+          <path d="M12 7H7.8a2.3 2.3 0 1 1 0-4.6c2.7 0 4.2 4.6 4.2 4.6Z" />
+          <path d="M12 7h4.2a2.3 2.3 0 1 0 0-4.6C13.5 2.4 12 7 12 7Z" />
+        </svg>
+      </span>
+      <span class="header-notice-text">Cash on delivery available nationwide</span>
+    </div>
 
     <div class="header-actions">
       <button id="theme-toggle" type="button" class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
@@ -23,43 +35,16 @@
         </span>
         <span class="toggle-label">Day</span>
       </button>
-
-      <button id="scroll-top-button" type="button" class="scroll-top-button" aria-label="Scroll back to top">
-        ↑ Top
-      </button>
     </div>
   </header>
 </div>
 
 <script>
-  const headerName = document.querySelector(".header-name");
-  const scrollTopButton = document.getElementById("scroll-top-button");
   const themeToggle = document.getElementById("theme-toggle");
   const themeLabel = themeToggle?.querySelector(".toggle-label");
   const storageKey = "gbp-theme";
   const root = document.documentElement;
   const body = document.body;
-
-  const handleScroll = () => {
-    const heroSection = document.querySelector(".hero");
-    const heroBottom = heroSection?.getBoundingClientRect().bottom ?? 0;
-
-    if (headerName) {
-      if (heroBottom < 100) {
-        headerName.classList.add("visible");
-      } else {
-        headerName.classList.remove("visible");
-      }
-    }
-
-    if (scrollTopButton) {
-      if (heroBottom < 0) {
-        scrollTopButton.classList.add("visible");
-      } else {
-        scrollTopButton.classList.remove("visible");
-      }
-    }
-  };
 
   const updateActiveNav = () => {
     const navItems = document.querySelectorAll<HTMLAnchorElement>("#hero-nav ul li a");
@@ -132,15 +117,7 @@
       applyTheme(nextTheme);
     });
 
-    if (scrollTopButton) {
-      scrollTopButton.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("scroll", updateActiveNav, { passive: true });
-    handleScroll();
     updateActiveNav();
   });
 </script>
@@ -163,10 +140,10 @@
   }
 
   header {
-    display: flex;
+    display: grid;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 18px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 14px 20px;
@@ -193,28 +170,68 @@
     transform: rotate(6deg) scale(1.08);
   }
 
-  .header-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: #F3D79A;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 0;
-    opacity: 0;
-    transition: max-width 0.3s ease, opacity 0.3s ease;
-  }
-
-  .header-name:global(.visible) {
-    max-width: 250px;
-    opacity: 1;
-  }
-
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-left: auto;
+    justify-content: flex-end;
+  }
+
+  .header-notice {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    gap: 14px;
+    min-height: 50px;
+    width: min(100%, 560px);
+    max-width: 100%;
+    min-width: 0;
+    padding: 13px 24px;
+    overflow: visible;
+    text-align: center;
+    isolation: isolate;
+  }
+
+  .header-notice-icon,
+  .header-notice-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-notice-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff4d1;
+    animation: noticeIconFloat 2.8s ease-in-out infinite;
+  }
+
+  .header-notice-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .header-notice-text {
+    color: #fff8e9;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  @keyframes noticeIconFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-3px);
+    }
   }
 
   .theme-toggle {
@@ -318,65 +335,75 @@
     letter-spacing: 0.14em;
   }
 
-  .scroll-top-button {
-    border: none;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #f3d79a, #d4a64f);
-    color: #10235e;
-    font-weight: 700;
-    padding: 10px 16px;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(4px);
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: 0 10px 24px rgba(17, 29, 122, 0.2);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
-  }
-
-  .scroll-top-button.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  .scroll-top-button:hover,
-  .scroll-top-button:focus-visible {
-    box-shadow: 0 14px 32px rgba(17, 29, 122, 0.24);
-    outline: none;
-    transform: translateY(-2px);
-  }
-
   @media (max-width: 768px) {
     header {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
       padding: 12px 16px;
     }
 
-    .scroll-top-button {
+    .header-notice {
+      width: 100%;
+      max-width: 100%;
+      min-height: 44px;
       padding: 10px 14px;
-      height: 40px;
+      gap: 10px;
+    }
+
+    .header-notice-text {
+      font-size: 10px;
+      letter-spacing: 0.035em;
+      line-height: 1.2;
+    }
+
+    .header-notice-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .theme-toggle {
+      padding: 9px 11px;
     }
   }
 
   @media (max-width: 500px) {
-    .header-name {
-      display: none;
+    header {
+      gap: 8px;
+      padding: 10px 12px;
+    }
+
+    .logo-link img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .header-notice {
+      gap: 8px;
+      padding: 8px 10px;
+      min-height: 38px;
+    }
+
+    .header-notice-icon {
+      width: auto;
+      height: auto;
+    }
+
+    .header-notice-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .header-notice-text {
+      font-size: 9px;
+      letter-spacing: 0.02em;
     }
 
     .theme-toggle {
-      padding: 9px 10px;
+      padding: 8px 10px;
     }
 
     .toggle-label {
       display: none;
-    }
-
-    .scroll-top-button {
-      padding: 9px 12px;
-      height: 38px;
     }
   }
 </style>
