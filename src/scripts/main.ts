@@ -89,16 +89,28 @@ function initVariantSliders() {
     });
 }
 
-// Initialize everything after the intro screen hides (2.2s) to avoid
-// running intersection observers and DOM queries during the splash
+// Initialize after the cinematic intro completes to avoid running
+// observers and DOM queries while the full-screen overlay is active.
 function init() {
     initCategoryFilter();
     initScrollReveal();
     initVariantSliders();
 }
 
+let initialized = false;
+
+function initOnce() {
+    if (initialized) return;
+    initialized = true;
+    init();
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(init, 2300));
+    document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('gbp:intro-complete', initOnce, { once: true });
+        setTimeout(initOnce, 4300);
+    });
 } else {
-    setTimeout(init, 2300);
+    window.addEventListener('gbp:intro-complete', initOnce, { once: true });
+    setTimeout(initOnce, 4300);
 }
