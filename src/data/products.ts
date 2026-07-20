@@ -36,7 +36,7 @@ export const products: Product[] = [
         category: "lamps",
         image: "/images/Romantic.png",
         size: "11cm L x 10cm W x 15cm H",
-        price: "₱1,499",
+        price: "₱1,599",
         orderUrl: ORDER_URL,
     },
     {
@@ -212,7 +212,7 @@ export const products: Product[] = [
         category: "figurines",
         image: "/images/GREEK.jpg",
         size: "11cm L x 10cm W x 36cm W",
-        price: "₱1,99",
+        price: "₱1,499",
         orderUrl: ORDER_URL,
         variantSliderKey: "greekGoddess",
         variants: [
