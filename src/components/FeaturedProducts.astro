@@ -13,6 +13,7 @@ import { featuredProducts } from '../data/featured';
         src={featuredProducts[0].image}
         alt={featuredProducts[0].name}
         class="featured-image"
+        data-fit={featuredProducts[0].fit ?? 'contain'}
       />
       <span id="featured-image-name" class="featured-image-name">{featuredProducts[0].name}</span>
     </div>
@@ -40,9 +41,15 @@ import { featuredProducts } from '../data/featured';
                 data-category={product.category}
                 data-price={product.price}
                 data-image={product.image}
+                data-fit={product.fit ?? 'contain'}
                 aria-label={`View ${product.name}`}
               >
-                <img src={product.image} alt={product.name} class="carousel-thumb" />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  class="carousel-thumb"
+                  data-fit={product.fit ?? 'contain'}
+                />
                 <span class="carousel-item-name">{product.name}</span>
               </button>
             ))}
@@ -80,9 +87,11 @@ import { featuredProducts } from '../data/featured';
       const newName = item.dataset.name || '';
       const newCategory = item.dataset.category || '';
       const newPrice = item.dataset.price || '';
+      const newFit = item.dataset.fit || 'contain';
 
       mainImage.src = newImage;
       mainImage.alt = newName;
+      mainImage.dataset.fit = newFit;
       imageName.textContent = newName;
       title.textContent = newName;
       category.textContent = newCategory;
@@ -166,8 +175,15 @@ import { featuredProducts } from '../data/featured';
   .featured-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     transition: opacity 0.3s ease;
+    background: var(--surface-alt);
+    padding: 14px;
+  }
+
+  .featured-image[data-fit='contain'] {
+    object-fit: contain;
   }
 
   .featured-image-name {
@@ -300,9 +316,15 @@ import { featuredProducts } from '../data/featured';
   .carousel-thumb {
     width: 100%;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     border-radius: 8px;
     background: var(--surface-alt);
+    padding: 6px;
+  }
+
+  .carousel-thumb[data-fit='contain'] {
+    object-fit: contain;
   }
 
   .carousel-item-name {
@@ -328,6 +350,10 @@ import { featuredProducts } from '../data/featured';
 
     .featured-image-wrapper {
       aspect-ratio: 4 / 3;
+    }
+
+    .featured-image[data-fit='contain'] {
+      padding: 16px;
     }
 
     .featured-title {
@@ -357,6 +383,10 @@ import { featuredProducts } from '../data/featured';
     .featured-image-wrapper {
       aspect-ratio: 4 / 3;
       border-radius: 12px;
+    }
+
+    .featured-image[data-fit='contain'] {
+      padding: 12px;
     }
 
     .featured-image-name {

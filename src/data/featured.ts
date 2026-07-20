@@ -4,6 +4,7 @@ export interface FeaturedProduct {
     description: string;
     price: string;
     image: string;
+    fit?: "cover" | "contain";
 }
 
 export const featuredProducts: FeaturedProduct[] = [
@@ -20,6 +21,7 @@ export const featuredProducts: FeaturedProduct[] = [
         description: "",
         price: "₱3,499",
         image: "/images/FEATURED_2.jpg",
+        fit: "contain",
     },
     {
         category: "Lamps",
@@ -27,6 +29,7 @@ export const featuredProducts: FeaturedProduct[] = [
         description: "",
         price: "₱2,499",
         image: "/images/FEATURED_3.jpg",
+        fit: "contain",
     },
     {
         category: "Figurines",
