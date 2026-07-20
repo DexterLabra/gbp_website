@@ -43,6 +43,7 @@ export const featuredProducts: FeaturedProduct[] = [
         name: "5. Elegant Wine Holder ",
         description: "",
         price: "₱1,895",
-        image: "/images/FEATURED_5.png",
-    },
+        image: "/images/FEATURED_5_UPDATED.png",
+        fit: "contain",     
+    },  
 ];
