@@ -77,7 +77,16 @@ import { featuredProducts } from '../data/featured';
     const category = document.getElementById('featured-category') as HTMLSpanElement;
     const price = document.getElementById('featured-price') as HTMLParagraphElement;
 
-    const ITEM_WIDTH = 132; // 120px width + 12px gap
+    function getScrollStep() {
+      const firstItem = carouselItems[0];
+      if (!firstItem) return 132;
+
+      const itemWidth = firstItem.offsetWidth;
+      const trackStyles = window.getComputedStyle(track);
+      const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap || '0');
+
+      return (itemWidth + gap) * 2;
+    }
 
     function selectItem(item: HTMLButtonElement) {
       carouselItems.forEach((el) => el.classList.remove('active'));
@@ -105,27 +114,35 @@ import { featuredProducts } from '../data/featured';
     // Infinite scroll: when reaching the end, loop back
     prevBtn.addEventListener('click', () => {
       const scrollLeft = carousel.scrollLeft;
+      const scrollStep = getScrollStep();
       if (scrollLeft <= 0) {
         // Jump to end
         carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
       } else {
-        carousel.scrollBy({ left: -ITEM_WIDTH * 2, behavior: 'smooth' });
+        carousel.scrollBy({ left: -scrollStep, behavior: 'smooth' });
       }
     });
 
     nextBtn.addEventListener('click', () => {
       const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      const scrollStep = getScrollStep();
       if (carousel.scrollLeft >= maxScroll - 2) {
         // Loop back to start
         carousel.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        carousel.scrollBy({ left: ITEM_WIDTH * 2, behavior: 'smooth' });
+        carousel.scrollBy({ left: scrollStep, behavior: 'smooth' });
       }
     });
   });
 </script>
 
 <style>
+  @property --featured-border-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
   .featured-section {
     padding: 80px 5% 100px;
     background: var(--surface-strong);
@@ -286,49 +303,129 @@ import { featuredProducts } from '../data/featured';
   }
 
   .carousel-item {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     flex: 0 0 auto;
-    width: 120px;
+    width: clamp(108px, 17vw, 132px);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 8px;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    background: var(--surface);
+    padding: 9px;
+    border: 1px solid rgba(212, 166, 79, 0.16);
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(212, 166, 79, 0.04)),
+      var(--surface);
     cursor: pointer;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.25s ease;
-    box-shadow: 0 8px 22px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.25s ease, border-color 0.25s ease;
+    box-shadow: 0 12px 28px var(--shadow-color);
   }
 
-  .carousel-item:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px var(--shadow-color);
+  .carousel-item::before,
+  .carousel-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.4s ease;
+  }
+
+  .carousel-item::before {
+    inset: -1px;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--featured-border-angle),
+      rgba(212, 166, 79, 0),
+      rgba(255, 232, 162, 0.95),
+      rgba(212, 166, 79, 0.45),
+      rgba(255, 247, 218, 1),
+      rgba(212, 166, 79, 0)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  .carousel-item::after {
+    inset: -28%;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 240, 183, 0.7), transparent 34%),
+      radial-gradient(circle at 80% 82%, rgba(212, 166, 79, 0.28), transparent 40%),
+      linear-gradient(120deg, transparent 24%, rgba(255, 245, 210, 0.45) 50%, transparent 76%);
+    transform: translateX(-18%) scale(0.92);
+    mix-blend-mode: screen;
+  }
+
+  .carousel-item:hover,
+  .carousel-item:focus-visible {
+    border-color: rgba(255, 232, 162, 0.42);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 18px 34px rgba(6, 16, 44, 0.22), 0 0 28px rgba(212, 166, 79, 0.34);
+  }
+
+  .carousel-item:hover::before,
+  .carousel-item:hover::after,
+  .carousel-item:focus-visible::before,
+  .carousel-item:focus-visible::after,
+  .carousel-item.active::before,
+  .carousel-item.active::after {
+    opacity: 1;
+  }
+
+  .carousel-item:hover::before,
+  .carousel-item:focus-visible::before,
+  .carousel-item.active::before {
+    animation: featuredBorderSpin 2.8s linear infinite;
+  }
+
+  .carousel-item:hover::after,
+  .carousel-item:focus-visible::after,
+  .carousel-item.active::after {
+    transform: translateX(0) scale(1);
+    animation: featuredShineSweep 2.2s ease-in-out infinite alternate;
   }
 
   .carousel-item.active {
-    border-color: var(--accent);
-    box-shadow: 0 8px 22px rgba(212, 166, 79, 0.22);
-    background: rgba(212, 166, 79, 0.08);
+    border-color: rgba(255, 232, 162, 0.44);
+    box-shadow: 0 14px 30px rgba(6, 16, 44, 0.2), 0 0 32px rgba(212, 166, 79, 0.28);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(212, 166, 79, 0.1)),
+      var(--surface);
   }
 
   .carousel-thumb {
+    position: relative;
+    z-index: 1;
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: contain;
     object-position: center;
-    border-radius: 8px;
+    border-radius: 10px;
     background: var(--surface-alt);
     padding: 6px;
+    transition: transform 0.35s ease, filter 0.35s ease;
   }
 
   .carousel-thumb[data-fit='contain'] {
     object-fit: contain;
   }
 
+  .carousel-item:hover .carousel-thumb,
+  .carousel-item:focus-visible .carousel-thumb,
+  .carousel-item.active .carousel-thumb {
+    transform: scale(1.03);
+    filter: drop-shadow(0 10px 18px rgba(212, 166, 79, 0.22));
+  }
+
   .carousel-item-name {
-    font-size: 11px;
+    position: relative;
+    z-index: 1;
+    font-size: clamp(10px, 0.9vw, 11px);
     font-weight: 600;
     color: var(--muted-text);
     text-align: center;
@@ -337,6 +434,24 @@ import { featuredProducts } from '../data/featured';
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  @keyframes featuredBorderSpin {
+    to {
+      --featured-border-angle: 360deg;
+    }
+  }
+
+  @keyframes featuredShineSweep {
+    from {
+      transform: translate3d(-14%, 0, 0) scale(0.96);
+      filter: brightness(0.95);
+    }
+
+    to {
+      transform: translate3d(12%, -2%, 0) scale(1.04);
+      filter: brightness(1.08);
+    }
   }
 
   /* Tablet: stack to single column */
@@ -368,16 +483,17 @@ import { featuredProducts } from '../data/featured';
   /* Mobile */
   @media (max-width: 600px) {
     .featured-section {
-      padding: 60px 4% 80px;
+      padding: 56px 4% 72px;
     }
 
     .section-title {
       font-size: 32px;
+      margin-bottom: 36px;
     }
 
     .featured-container {
       max-width: 100%;
-      gap: 20px;
+      gap: 18px;
     }
 
     .featured-image-wrapper {
@@ -396,14 +512,38 @@ import { featuredProducts } from '../data/featured';
 
     .featured-title {
       font-size: 20px;
+      line-height: 1.2;
     }
 
     .featured-price {
       font-size: 18px;
     }
 
+    .featured-details {
+      gap: 22px;
+    }
+
+    .carousel-wrapper {
+      gap: 6px;
+      align-items: stretch;
+    }
+
+    .featured-carousel {
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      padding-bottom: 4px;
+    }
+
+    .carousel-track {
+      gap: 10px;
+      padding: 4px 2px 6px;
+    }
+
     .carousel-item {
-      width: 100px;
+      width: min(31vw, 112px);
+      min-width: 96px;
+      padding: 8px;
+      scroll-snap-align: start;
     }
 
     .carousel-item-name {
@@ -413,6 +553,19 @@ import { featuredProducts } from '../data/featured';
     .carousel-nav {
       width: 30px;
       height: 30px;
+      align-self: center;
+      box-shadow: 0 6px 16px var(--shadow-color);
+    }
+  }
+
+  @media (hover: none) {
+    .carousel-item:hover {
+      transform: none;
+    }
+
+    .carousel-item:hover::before,
+    .carousel-item:hover::after {
+      opacity: 0;
     }
   }
 </style>
