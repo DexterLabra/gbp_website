@@ -851,7 +851,7 @@ export const products: Product[] = [
         category: "figurines",
         image: "/images/RUNNINGHGOLD.png",
         size: "22cm L x 5cm W x 18.5cm H",
-        price: "₱0.55kg",
+        price: "₱1,575kg",
         orderUrl: ORDER_URL,
     },
     {
