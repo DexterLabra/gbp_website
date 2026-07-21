@@ -185,9 +185,9 @@ export const products: Product[] = [
         variantSliderKey: "golfWhite",
         variants: [
             { img: "/images/GOLFWHITEALL.png", color: "Golf Sport White Set", desc: "" },
-            { img: "/images/GWHITEA.png", color: "White", desc: "" },
-            { img: "/images/GWHITEB.png", color: "White", desc: "" },
-            { img: "/images/GWHITEC.png", color: "White", desc: "" },
+            { img: "/images/GWHITEA.png", color: "Golf Sport White Solo - A", desc: "" },
+            { img: "/images/GWHITEB.png", color: "Golf Sport White Solo - B", desc: "" },
+            { img: "/images/GWHITEC.png", color: "Golf Sport White Solo - C", desc: "" },
         ],
     },
     {
