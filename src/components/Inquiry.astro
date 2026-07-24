@@ -95,6 +95,36 @@
     const status = document.getElementById('form-status') as HTMLParagraphElement;
     const submitBtn = form.querySelector('.submit-btn') as HTMLButtonElement;
     const privacyCheckbox = form.querySelector('#privacy-terms') as HTMLInputElement;
+    const trackedFields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+      'input[required], textarea[required]'
+    );
+
+    const setStatus = (message: string, tone: 'success' | 'error' | 'neutral' = 'neutral') => {
+      status.textContent = message;
+      status.className = 'form-status';
+      if (tone !== 'neutral') {
+        status.classList.add(tone);
+      }
+    };
+
+    const updateFieldValidity = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      field.classList.toggle('is-invalid', !field.checkValidity());
+    };
+
+    trackedFields.forEach((field) => {
+      field.addEventListener('input', () => {
+        if (status.textContent) {
+          setStatus('');
+        }
+        if (field.classList.contains('is-invalid')) {
+          updateFieldValidity(field);
+        }
+      });
+
+      field.addEventListener('blur', () => {
+        updateFieldValidity(field);
+      });
+    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -102,16 +132,17 @@
       const isValid = form.reportValidity();
       const isAccepted = privacyCheckbox.checked;
 
+      trackedFields.forEach((field) => updateFieldValidity(field));
+
       if (!isValid || !isAccepted) {
-        status.textContent = 'Please complete all fields and agree to the Privacy Policy and Terms of Use.';
-        status.className = 'form-status error';
+        setStatus('Please complete all fields and agree to the Privacy Policy and Terms of Use.', 'error');
         return;
       }
 
       submitBtn.disabled = true;
       submitBtn.classList.add('loading');
-      status.textContent = '';
-      status.className = 'form-status';
+      submitBtn.setAttribute('aria-busy', 'true');
+      setStatus('');
 
       try {
         const response = await fetch('https://api.web3forms.com/submit', {
@@ -122,20 +153,19 @@
         const data = await response.json();
 
         if (data.success) {
-          status.textContent = 'Thank you! Your inquiry has been sent successfully.';
-          status.classList.add('success');
+          setStatus('Thank you! Your inquiry has been sent successfully.', 'success');
           form.reset();
           privacyCheckbox.checked = false;
+          trackedFields.forEach((field) => field.classList.remove('is-invalid'));
         } else {
-          status.textContent = 'Something went wrong. Please try again.';
-          status.classList.add('error');
+          setStatus('Something went wrong. Please try again.', 'error');
         }
       } catch {
-        status.textContent = 'Network error. Please check your connection and try again.';
-        status.classList.add('error');
+        setStatus('Network error. Please check your connection and try again.', 'error');
       } finally {
         submitBtn.disabled = false;
         submitBtn.classList.remove('loading');
+        submitBtn.removeAttribute('aria-busy');
       }
     });
   });
@@ -151,6 +181,7 @@
     color: var(--page-text);
     position: relative;
     overflow: hidden;
+    scroll-margin-top: 110px;
     transition: background-color 0.4s ease, color 0.4s ease;
   }
 
@@ -199,6 +230,7 @@
     backdrop-filter: blur(20px);
     position: relative;
     z-index: 1;
+    will-change: transform;
     transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
@@ -416,6 +448,12 @@
     transform: translateY(-1px);
   }
 
+  input.is-invalid,
+  textarea.is-invalid {
+    border-color: rgba(255, 150, 139, 0.8);
+    box-shadow: 0 0 0 3px rgba(255, 150, 139, 0.16);
+  }
+
   textarea {
     resize: vertical;
     min-height: 120px;
@@ -520,6 +558,14 @@
     min-height: 20px;
     margin-top: 4px;
     color: var(--muted-text);
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  }
+
+  .form-status:not(:empty) {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .form-status.success {
@@ -528,6 +574,18 @@
 
   .form-status.error {
     color: #ff968b;
+  }
+
+  @media (max-width: 900px) {
+    .inquiry-section {
+      padding: 92px 5%;
+    }
+
+    .inquiry-form {
+      padding: 32px 24px;
+      border-radius: 24px;
+      gap: 20px;
+    }
   }
 
   @media (max-width: 600px) {
@@ -554,6 +612,12 @@
     .submit-btn {
       width: 100%;
       padding: 16px 24px;
+    }
+  }
+
+  @media (hover: none) {
+    .submit-btn:hover:not(:disabled) {
+      transform: none;
     }
   }
 </style>

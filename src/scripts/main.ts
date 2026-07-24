@@ -35,13 +35,47 @@ function initScrollReveal() {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
                 }
             });
         },
-        { threshold: 0.05 }
+        {
+            threshold: 0.08,
+            rootMargin: '0px 0px -8% 0px'
+        }
     );
 
     items.forEach((item) => observer.observe(item));
+}
+
+function initSmoothAnchors() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]:not([href="#"])');
+    if (!links.length) return;
+
+    links.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const hash = link.getAttribute('href');
+            if (!hash) return;
+
+            const target = document.querySelector<HTMLElement>(hash);
+            if (!target) return;
+
+            event.preventDefault();
+
+            const header = document.querySelector<HTMLElement>('.header-wrapper');
+            const headerOffset = header ? header.offsetHeight + 14 : 0;
+            const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+            window.scrollTo({
+                top: Math.max(0, top),
+                behavior: 'smooth'
+            });
+
+            if (history.pushState) {
+                history.pushState(null, '', hash);
+            }
+        }, { passive: false });
+    });
 }
 
 // Variant Sliders
@@ -105,6 +139,7 @@ function init() {
     initCategoryFilter();
     initScrollReveal();
     initVariantSliders();
+    initSmoothAnchors();
 }
 
 let initialized = false;

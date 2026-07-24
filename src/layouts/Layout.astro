@@ -29,6 +29,10 @@ const { title } = Astro.props;
 <style is:global>
   :root {
     color-scheme: light;
+    --motion-fast: 220ms;
+    --motion-base: 340ms;
+    --motion-slow: 560ms;
+    --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
     --page-bg: #faf8f4;
     --page-text: #222;
     --muted-text: #5e5b54;
@@ -81,6 +85,9 @@ const { title } = Astro.props;
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
@@ -90,6 +97,21 @@ const { title } = Astro.props;
     overflow-x: hidden;
     animation: pageIn 0.8s ease;
     transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  [role='button'],
+  a {
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   body.dark-mode {
@@ -113,5 +135,20 @@ const { title } = Astro.props;
 
   img {
     content-visibility: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 </style>
