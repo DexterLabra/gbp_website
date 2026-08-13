@@ -74,6 +74,12 @@ export const products: Product[] = [
         size: "16.5cm L x 18cm W x 40cm H",
         price: "₱2,499",
         orderUrl: ORDER_URL,
+        variantSliderKey: "ThinkingHuman",
+        variants: [
+            { img: "/images/THINKING1.png", color: "White", desc: "Thinking Human Sculpture - A" },
+            { img: "/images/THINKING2.png", color: "White", desc: "Thinking Human Sculpture - B" },
+            { img: "/images/THINKING3.png", color: "White", desc: "Thinking Human Sculpture - C" },
+        ],
     },
     {
         id: "hercules",
@@ -131,9 +137,9 @@ export const products: Product[] = [
         variantSliderKey: "prayingHead",
         variants: [
             { img: "/images/PRAYING.png", color: "Gold/Black", desc: "Praying Head Sculpture Set" },
-            { img: "/images/HEAD-A.png", color: "A - Gold/Black", desc: "Praying Head Sculpture - A" },
-            { img: "/images/HEAD-B.png", color: "B - Gold/Black", desc: "Praying Head Sculpture - B" },
-            { img: "/images/HEAD-C.png", color: "C - Gold/Black", desc: "Praying Head Sculpture - C" },
+            { img: "/images/PRAYINGHEAD-A.png", color: "A - Gold/Black", desc: "Praying Head Sculpture - A" },
+            { img: "/images/PRAYINGHEAD-B.png", color: "B - Gold/Black", desc: "Praying Head Sculpture - B" },
+            { img: "/images/PRAYINGHEAD-C.png", color: "C - Gold/Black", desc: "Praying Head Sculpture - C" },
         ],
     },
     {
