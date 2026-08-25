@@ -14,11 +14,12 @@ export const featuredProducts: FeaturedProduct[] = [
         description: "",
         price: "₱1,299",
         image: "/images/FEATURED_1.jpg",
+        
     },
     {
         category: "Lamps",
         name: "2. Modern Leopard Decor Sculpture with Night Lamp",
-        description: "",
+        description: "lady justice decor top 1",
         price: "₱3,499",
         image: "/images/FEATURED_2.jpg",
         fit: "contain",

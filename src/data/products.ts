@@ -967,7 +967,7 @@ export const products: Product[] = [
         id: "astronaut-bookends",
         name: "Modern Astronaut Bookends",
         category: "bookends",
-        image: "/images/Astronaut Bookends1q.png",
+        image: "/images/Astronaut Bookends1.png",
         size: "12cm L x 9.5cm W x 19.5cm H",
         price: "₱1,575",
         orderUrl: ORDER_URL,
