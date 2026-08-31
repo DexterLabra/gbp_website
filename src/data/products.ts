@@ -128,6 +128,12 @@ export const products: Product[] = [
         size: "13.8cm L x 20.5cm W x 31.7cm H",
         price: "₱1,999",
         orderUrl: ORDER_URL,
+        variantSliderKey: "KneelingHuman",
+        variants: [
+            { img: "/images/KNEELINGHUMAN_1.png", color: "White", desc: "Kneeling Human Sculpture - A" },
+            { img: "/images/KNEELINGHUMAN_2.png", color: "White", desc: "Kneeling Human Sculpture - B" },
+            { img: "/images/KNEELINGHUMAN_3.png", color: "White", desc: "Kneeling Human Sculpture - C" },
+        ],
     },
     {
         id: "thinking",
@@ -139,9 +145,9 @@ export const products: Product[] = [
         orderUrl: ORDER_URL,
         variantSliderKey: "ThinkingHuman",
         variants: [
-            { img: "/images/THINKING1.png", color: "White", desc: "Thinking Human Sculpture - A" },
+            { img: "/images/THINKING3.png", color: "White", desc: "Thinking Human Sculpture - A" },
             { img: "/images/THINKING2.png", color: "White", desc: "Thinking Human Sculpture - B" },
-            { img: "/images/THINKING3.png", color: "White", desc: "Thinking Human Sculpture - C" },
+            { img: "/images/THINKING1.png", color: "White", desc: "Thinking Human Sculpture - C" },
         ],
     },
     {
@@ -357,19 +363,50 @@ export const products: Product[] = [
         ],
     },
     {
-        id: "flamingo",
+        id: "flamingo_pink",
         name: "Modern Geometric Flamingo Decor Statue",
         category: "figurines",
         image: "/images/FLAMINGO.jpg",
         size: "19.5cm L x 11.5cm W x 36.5cm H",
         price: "₱1,749",
         orderUrl: ORDER_URL,
-        variantSliderKey: "flamingo",
+        variantSliderKey: "flamingoPink",
         variants: [
-            { img: "/images/FLAMINGO.jpg", color: "Pink, White, Teal", desc: "" },
-            { img: "/images/FLAMINGO_PINK.png", color: "Pink", desc: "" },
-            { img: "/images/FLAMINGO_WHITE.png", color: "White", desc: "" },
-            { img: "/images/FLAMINGO_TEAL.png", color: "Teal", desc: "" },
+            { img: "/images/FLAMINGO_PINK_3.png", color: "Pink", desc: "" },
+            { img: "/images/FLAMINGO_PINK_1.png", color: "Pink", desc: "" },
+            { img: "/images/FLAMINGO_PINK_2.png", color: "Pink", desc: "" },
+
+        ],
+    },
+    {
+        id: "flamingo_white",
+        name: "Modern Geometric Flamingo Decor Statue",
+        category: "figurines",
+        image: "/images/FLAMINGO.jpg",
+        size: "19.5cm L x 11.5cm W x 36.5cm H",
+        price: "₱1,749",
+        orderUrl: ORDER_URL,
+        variantSliderKey: "flamingoWhite",
+        variants: [
+            { img: "/images/FLAMINGO_WHITE_1.png", color: "White", desc: "" },
+            { img: "/images/FLAMINGO_WHITE_2.png", color: "White", desc: "" },
+            { img: "/images/FLAMINGO_WHITE_3.png", color: "White", desc: "" },
+           
+        ],
+    },
+    {
+        id: "flamingo_teal",
+        name: "Modern Geometric Flamingo Decor Statue",
+        category: "figurines",
+        image: "/images/FLAMINGO.jpg",
+        size: "19.5cm L x 11.5cm W x 36.5cm H",
+        price: "₱1,749",
+        orderUrl: ORDER_URL,
+        variantSliderKey: "flamingoTeal",
+        variants: [
+            { img: "/images/FLAMINGO_TEAL_1.png", color: "Teal", desc: "" },
+            { img: "/images/FLAMINGO_TEAL_2.png", color: "Teal", desc: "" },
+            { img: "/images/FLAMINGO_TEAL_3.png", color: "Teal", desc: "" },
         ],
     },
     {
