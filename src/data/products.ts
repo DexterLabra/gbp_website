@@ -30,6 +30,36 @@ export const categories = [
 ];
 
 export const products: Product[] = [
+    {
+        id: "man-dog-lover-statue",
+        name: "Elegant Man Dog Lover Decor Statue",
+        category: "Figurines",
+        image: "/images/ManDogLoverStatue1.png",
+        size: "7.0cm L x 6.70cm W x 28.20cm H",
+        price: "₱1,995",
+        orderUrl: ORDER_URL,
+    },
+    
+    {
+        id: "male-doctor-statue",
+        name: "Elegant Male Doctor Decor Statue",
+        category: "Figurines",
+        image: "/images/MaleDoctorStatue1.png",
+        size: "7.0cm L x 6.70cm W x 28.20cm H",
+        price: "₱1,995",
+        orderUrl: ORDER_URL,
+    },
+    
+    {
+        id: "lady-cat-lover",
+        name: "Elegant Lady Cat Lover Decor Statue",
+        category: "Figurines",
+        image: "/images/LadyCatLover1.png",
+        size: "7.0cm L x 6.70cm W x 28.20cm H",
+        price: "₱1,995",
+        orderUrl: ORDER_URL,
+    },
+    
      {
         id: "horse-wine-holder",
         name: "Golden Horse Chariot Wine Holder ",
