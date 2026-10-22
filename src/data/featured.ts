@@ -40,11 +40,11 @@ export const featuredProducts: FeaturedProduct[] = [
         image: "/images/FEATURED_4.png",
     },
     {
-        category: "Tray and Holders",
-        name: "5. Elegant Wine Holder ",
+        category: "Figurine",
+        name: "5. Elegant Male Doctor Decor Statue ",
         description: "",
-        price: "₱1,895",
-        image: "/images/FEATURED_5_UPDATED.png",
+        price: "₱1,995",
+        image: "/images/MaleDoctorStatue1.png",
         fit: "contain",     
     },  
 ];
