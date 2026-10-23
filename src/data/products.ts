@@ -276,7 +276,7 @@ export const products: Product[] = [
         category: "figurines",
         image: "/images/ROMAN.jpg",
         size: "12cm L x 9cm W x 22cm H",
-        price: "₱799",
+        price: "₱1,599",
         orderUrl: ORDER_URL,
     },
     {
