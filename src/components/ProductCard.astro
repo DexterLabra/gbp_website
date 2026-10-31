@@ -47,7 +47,7 @@ const hasVariants = product.variants && product.variants.length > 0;
     )}
     <p>Size: {product.size}</p>
     <p class="price">{product.price}</p>
-    <a href={product.orderUrl} class="order-btn" target="_blank" rel="noopener">Order Now</a>
+    <a href={product.orderUrl} class="order-btn" target="_blank" rel="noopener"><span>Order Now</span></a>
   </div>
 </div>
 
@@ -134,21 +134,66 @@ const hasVariants = product.variants && product.variants.length > 0;
   }
 
   .order-btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-block;
     margin-top: 12px;
-    padding: 10px 22px;
+    padding: 12px 24px;
     background: linear-gradient(135deg, #f0c66c, #D4A64F);
-    color: var(--surface-ink);
+    color: #7a1420;
     font-weight: 600;
     text-decoration: none;
     border-radius: 30px;
-    transition: 0.3s;
+    box-shadow: 0 3px 10px rgba(122, 20, 32, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     font-size: 13px;
   }
 
-  .order-btn:hover {
+  .order-btn::before {
+    position: absolute;
+    z-index: -1;
+    top: -50%;
+    bottom: -50%;
+    left: -60%;
+    width: 35%;
+    content: "";
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+    transform: skewX(-22deg);
+    transition: left 0.65s ease;
+  }
+
+  .order-btn span {
+    position: relative;
+    z-index: 1;
+    color: #b5121b;
+  }
+
+  .order-btn:hover,
+  .order-btn:focus-visible {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(212, 166, 79, 0.4);
+    box-shadow: 0 8px 20px rgba(122, 20, 32, 0.2), 0 0 16px rgba(240, 198, 108, 0.55);
+  }
+
+  .order-btn:hover::before,
+  .order-btn:focus-visible::before {
+    left: 130%;
+  }
+
+  .order-btn:focus-visible {
+    outline: 2px solid #7a1420;
+    outline-offset: 3px;
+  }
+
+  .order-btn:active {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .order-btn,
+    .order-btn::before {
+      transition: none;
+    }
   }
 
   /* Variant Slider */
@@ -230,7 +275,8 @@ const hasVariants = product.variants && product.variants.length > 0;
     }
 
     .order-btn {
-      padding: 8px 16px;
+      min-height: 44px;
+      padding: 12px 16px;
       font-size: 11px;
     }
   }
