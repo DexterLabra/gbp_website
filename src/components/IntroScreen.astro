@@ -1,12 +1,16 @@
-
-<div class="intro-screen" id="intro">
-  <h1>GBP Home Art & Decors</h1>
-  <p>Luxury • Elegant • Premium</p>
+<div class="intro-screen" id="intro" aria-hidden="true">
+  <div class="intro-content">
+    <span class="intro-eyebrow">HOME · ART · DECORS</span>
+    <h1>GBP Home Art &amp; Decors</h1>
+    <span class="intro-divider" aria-hidden="true"><span></span></span>
+    <p>Luxury <span aria-hidden="true">·</span> Elegant <span aria-hidden="true">·</span> Premium</p>
+  </div>
 </div>
 
 <script>
-  const INTRO_DELAY = 2200;
-  const INTRO_FADE_MS = 1000;
+  const INTRO_DELAY = 1450;
+  const INTRO_FADE_MS = 780;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const hideIntro = () => {
     const intro = document.getElementById('intro');
@@ -18,20 +22,30 @@
     if (intro.classList.contains('intro-hide')) return;
     intro.classList.add('intro-hide');
 
+    let completed = false;
     const finish = () => {
+      if (completed) return;
+      completed = true;
+      intro.removeEventListener('transitionend', onTransitionEnd);
       window.dispatchEvent(new CustomEvent('gbp:intro-complete'));
     };
 
-    intro.addEventListener('animationend', finish, { once: true });
-    window.setTimeout(finish, INTRO_FADE_MS + 120);
+    const onTransitionEnd = (event: TransitionEvent) => {
+      if (event.target === intro && event.propertyName === 'opacity') finish();
+    };
+
+    intro.addEventListener('transitionend', onTransitionEnd);
+    window.setTimeout(finish, (prefersReducedMotion ? 0 : INTRO_FADE_MS) + 120);
+  };
+
+  const startIntroExit = () => {
+    window.setTimeout(hideIntro, prefersReducedMotion ? 0 : INTRO_DELAY);
   };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      window.setTimeout(hideIntro, INTRO_DELAY);
-    });
+    document.addEventListener('DOMContentLoaded', startIntroExit, { once: true });
   } else {
-    window.setTimeout(hideIntro, INTRO_DELAY);
+    startIntroExit();
   }
 </script>
 
@@ -40,71 +54,127 @@
     position: fixed;
     inset: 0;
     z-index: 99999;
-    background: radial-gradient(circle at center, #1b245f, #08114D 60%, #000);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #fff;
+    display: grid;
+    place-items: center;
     overflow: hidden;
+    padding: 24px;
+    color: #fff;
     text-align: center;
-    padding: 20px;
+    background:
+      radial-gradient(ellipse at 50% 42%, rgba(47, 59, 129, 0.72), transparent 46%),
+      linear-gradient(145deg, #10194f, #080d32 72%, #050817);
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+    transition:
+      opacity 780ms cubic-bezier(0.65, 0, 0.35, 1),
+      transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 780ms ease,
+      visibility 0s linear 780ms;
     will-change: opacity, transform;
   }
 
-  .intro-screen h1 {
-    font-size: clamp(1.6rem, 6vw, 3rem);
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 1px;
-    animation: v10logo 5s ease forwards;
-  }
-
-  .intro-screen p {
-    opacity: 0;
-    animation: v10tag 5s ease forwards;
-    color: #FFD978;
-    font-size: 0.9rem;
-  }
-
-  .intro-screen::after {
+  .intro-screen::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent, rgba(255, 217, 120, .25), transparent);
-    animation: sweep 4s linear infinite;
-  }
-
-  .intro-hide {
-    animation: fadeOutIntro 1s forwards;
+    width: min(72vw, 560px);
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 217, 120, 0.11);
+    border-radius: 50%;
+    box-shadow: 0 0 0 36px rgba(255, 217, 120, 0.025), 0 0 90px rgba(255, 217, 120, 0.06);
     pointer-events: none;
   }
 
-  @keyframes v10logo {
-    0% { opacity: 0; transform: scale(.6); }
-    40% { opacity: 1; transform: scale(1.08); }
-    100% { transform: scale(1); }
+  .intro-content {
+    position: relative;
+    width: min(100%, 760px);
+    animation: introReveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  @keyframes v10tag {
-    0%, 45% { opacity: 0; }
-    70% { opacity: 1; }
-    100% { opacity: 1; }
+  .intro-eyebrow {
+    display: block;
+    margin-bottom: 20px;
+    color: rgba(255, 226, 164, 0.84);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.34em;
   }
 
-  @keyframes sweep {
-    from { transform: translateX(-120%); }
-    to { transform: translateX(120%); }
+  .intro-screen h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4.25rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: 0.015em;
+    text-wrap: balance;
   }
 
-  @keyframes fadeOutIntro {
-    to { opacity: 0; visibility: hidden; transform: scale(1.01); }
+  .intro-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(200px, 42vw);
+    height: 1px;
+    margin: 24px auto 18px;
+    background: linear-gradient(90deg, transparent, rgba(255, 217, 120, 0.55), transparent);
+  }
+
+  .intro-divider span {
+    width: 5px;
+    height: 5px;
+    border: 1px solid #f5d286;
+    transform: rotate(45deg);
+  }
+
+  .intro-screen p {
+    color: #f5d286;
+    font-size: clamp(0.72rem, 2vw, 0.9rem);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    animation: introTagline 700ms 300ms ease both;
+  }
+
+  .intro-screen p span {
+    padding: 0 0.35em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .intro-hide {
+    opacity: 0;
+    transform: scale(1.025);
+    filter: blur(5px);
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  @keyframes introReveal {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes introTagline {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .intro-eyebrow {
+      margin-bottom: 16px;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+    }
+
+    .intro-screen p {
+      letter-spacing: 0.14em;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .intro-screen h1,
-    .intro-screen p,
-    .intro-screen::after,
-    .intro-hide {
+    .intro-screen,
+    .intro-content,
+    .intro-screen p {
+      transition: none;
       animation: none;
     }
   }

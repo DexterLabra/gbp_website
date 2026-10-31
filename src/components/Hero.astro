@@ -2,6 +2,7 @@
 const navLinks = [
   { href: "#", text: "Home" },
   { href: "#featured", text: "Featured Products" },
+  { href: "#likha", text: "Likha Collections" },
   { href: "#collections", text: "Collections" },
   { href: "#testimonials", text: "Client Feedback" },
   { href: "#shipping", text: "Shipping" },
@@ -22,12 +23,10 @@ const navLinks = [
         loading="eager"
         decoding="async"
       />
-      <h2>GBP Home Art & Decors</h2>
+      <h2>GBP Home Art &amp; Decors</h2>
     </div>
     <p class="bio">
-      <span class="bio-text">
-        We curate and provide functional and creative decor pieces that bring warmth, character, and elegance to every home.
-      </span>
+      We curate and provide functional and creative decor pieces that bring warmth, character, and elegance to every home.
     </p>
 
     <nav id="hero-nav" aria-label="Primary navigation" class="hero-nav">
@@ -44,385 +43,223 @@ const navLinks = [
 
 <style>
   .hero {
-    min-height: 82vh;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    background: linear-gradient(180deg, rgba(7, 12, 38, 0.92), rgba(15, 24, 94, 0.64)),
-      url('/images/GBP_HERO_BG.png');
-    background-blend-mode: multiply;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    padding: 60px 20px;
-    position: relative;
+    min-height: clamp(640px, 82vh, 860px);
+    padding: clamp(40px, 7vw, 80px) 20px;
     overflow: hidden;
+    text-align: center;
+    background:
+      linear-gradient(180deg, rgba(7, 12, 38, 0.88), rgba(15, 24, 94, 0.56)),
+      url('/images/GBP_HERO_BG.png') center / cover no-repeat;
   }
 
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 15% 20%, rgba(255, 221, 136, 0.18), transparent 20%),
-      radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.12), transparent 18%);
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255, 221, 136, 0.14), transparent 22%),
+      radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1), transparent 20%);
     pointer-events: none;
-    mix-blend-mode: screen;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
-    animation: shine 8s linear infinite;
-  }
-
-  @keyframes shine {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(100%); }
   }
 
   .hero-content {
-    max-width: 900px;
     position: relative;
-    z-index: 2;
-    animation: grandEntrance 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 1;
+    width: min(100%, 900px);
+    animation: heroReveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .hero-brand {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: clamp(12px, 2vw, 20px);
     margin-bottom: 20px;
   }
 
   .hero-logo {
-    width: clamp(220px, 22vw, 320px);
-    height: auto;
     display: block;
+    width: clamp(160px, 22vw, 280px);
+    height: auto;
     object-fit: contain;
-    background: transparent;
-    transition: transform 0.35s ease, filter 0.35s ease;
-    animation: glowPulse 7s ease-in-out infinite;
-    filter: brightness(1.02) drop-shadow(0 0 28px rgba(255, 215, 0, 0.24));
-  }
-
-  .hero-logo:hover {
-    transform: scale(1.06) rotate(-0.5deg);
-    filter: brightness(1.1) drop-shadow(0 0 38px rgba(255, 215, 0, 0.32));
-  }
-
-  @keyframes glowPulse {
-    0%, 100% {
-      filter: brightness(1.02) drop-shadow(0 0 28px rgba(255, 215, 0, 0.24));
-    }
-    50% {
-      filter: brightness(1.05) drop-shadow(0 0 36px rgba(255, 215, 0, 0.28));
-    }
-  }
-
-  @keyframes grandEntrance {
-    0% { opacity: 0; transform: translateY(80px) scale(0.92); filter: blur(12px); }
-    100% { opacity: 1; transform: none; filter: none; }
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.24));
+    transition: transform 280ms var(--motion-ease), filter 280ms ease;
   }
 
   .hero h2 {
+    max-width: 100%;
+    color: #fff;
     font-family: 'Playfair Display', serif;
-    font-size: 65px;
-    color: white;
-    margin: 0;
-    background: linear-gradient(90deg, #fff, #FFD978, #D4A64F, #fff);
-    background-size: 300% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: glowFloat 6s ease-in-out infinite;
-  }
-
-  @keyframes glowFloat {
-    0%, 100% { background-position: 0%; }
-    50% { background-position: 100%; }
+    font-size: clamp(2rem, 5.2vw, 4.1rem);
+    font-weight: 600;
+    line-height: 1.12;
+    text-wrap: balance;
   }
 
   .bio {
-    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(1.5rem, 2.1vw, 2.25rem);
-    line-height: 1.78;
-    font-weight: 500;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(20px, 3.2vw, 32px);
+    border: 1px solid rgba(241, 197, 122, 0.36);
+    border-radius: 26px;
     color: #fff3d6;
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.05rem, 2.1vw, 1.55rem);
+    font-weight: 500;
+    line-height: 1.7;
     letter-spacing: 0.015em;
-    text-shadow: 0 2px 5px rgba(22, 10, 44, 0.25), 0 0 16px rgba(242, 201, 112, 0.2);
-    background:
-      linear-gradient(145deg, rgba(255, 232, 193, 0.38), rgba(245, 182, 204, 0.22) 52%, rgba(255, 247, 229, 0.3)),
-      radial-gradient(circle at 88% 22%, rgba(255, 209, 125, 0.28), transparent 48%);
-    border: 1px solid rgba(241, 197, 122, 0.44);
-    padding: 32px 34px;
-    border-radius: 34px;
-    backdrop-filter: blur(17px);
-    box-shadow: 0 24px 74px rgba(15, 23, 75, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.38);
-    transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    animation: bioGlow 7.2s ease-in-out infinite alternate;
-  }
-
-  .bio-text {
-    position: relative;
-    z-index: 3;
-    display: block;
-    animation: bioTextFloat 6s ease-in-out infinite;
-  }
-
-  .bio::before,
-  .bio::after {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-  }
-
-  .bio::before {
-    inset: -30% -22%;
-    z-index: 1;
-    background:
-      radial-gradient(circle at 18% 72%, rgba(255, 213, 150, 0.2) 0 2px, transparent 3px),
-      radial-gradient(circle at 78% 24%, rgba(255, 228, 178, 0.2) 0 2px, transparent 3px),
-      radial-gradient(circle at 44% 48%, rgba(255, 215, 146, 0.2) 0 1.8px, transparent 3px),
-      linear-gradient(125deg, transparent 40%, rgba(255, 205, 122, 0.66) 48%, rgba(255, 243, 214, 0.9) 50%, rgba(255, 205, 122, 0.66) 52%, transparent 60%),
-      linear-gradient(52deg, transparent 38%, rgba(255, 198, 114, 0.55) 49%, rgba(255, 236, 200, 0.82) 51%, rgba(255, 198, 114, 0.55) 53%, transparent 64%);
-    background-size: 220px 220px, 260px 260px, 200px 200px, 180% 180%, 180% 180%;
-    background-position: 0% 0%, 100% 100%, 50% 50%, -30% 20%, 120% 80%;
-    filter: blur(0.35px) saturate(1.1);
-    opacity: 0.58;
-    mix-blend-mode: screen;
-    animation: bioCinematicFlow 9s linear infinite;
-  }
-
-  .bio::after {
-    inset: -1px;
-    padding: 1.6px;
-    border-radius: inherit;
-    z-index: 2;
-    background:
-      conic-gradient(
-        from 0deg,
-        rgba(255, 231, 173, 0) 0deg,
-        rgba(255, 231, 173, 0.12) 56deg,
-        rgba(255, 246, 224, 0.94) 72deg,
-        rgba(255, 231, 173, 0.2) 86deg,
-        rgba(255, 231, 173, 0) 120deg,
-        rgba(255, 206, 122, 0) 220deg,
-        rgba(255, 229, 165, 0.9) 250deg,
-        rgba(255, 247, 228, 1) 264deg,
-        rgba(255, 229, 165, 0.2) 276deg,
-        rgba(255, 206, 122, 0) 320deg,
-        rgba(255, 231, 173, 0) 360deg
-      );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    filter: drop-shadow(0 0 8px rgba(252, 211, 130, 0.35));
-    opacity: 0.85;
-    animation: bioBorderOrbit 5.8s linear infinite, bioBorderSpark 2.3s ease-in-out infinite;
-  }
-
-  .bio:hover {
-    transform: translateY(-5px) scale(1.015);
-    background:
-      linear-gradient(145deg, rgba(255, 236, 205, 0.44), rgba(247, 187, 210, 0.26) 55%, rgba(255, 249, 236, 0.34)),
-      radial-gradient(circle at 86% 20%, rgba(255, 216, 142, 0.33), transparent 52%);
-    border-color: rgba(247, 206, 137, 0.68);
-    box-shadow: 0 30px 90px rgba(15, 23, 75, 0.24), 0 0 28px rgba(244, 192, 123, 0.22);
-  }
-
-  @keyframes bioGlow {
-    0% {
-      box-shadow: 0 20px 62px rgba(15, 23, 75, 0.18), 0 0 16px rgba(245, 197, 129, 0.14);
-      border-color: rgba(241, 197, 122, 0.38);
-    }
-    100% {
-      box-shadow: 0 30px 86px rgba(15, 23, 75, 0.24), 0 0 24px rgba(246, 201, 136, 0.28);
-      border-color: rgba(246, 207, 140, 0.62);
-    }
-  }
-
-  @keyframes bioWelcomeGlow {
-    0% {
-      opacity: 0;
-      transform: translateY(10px) scale(0.92);
-    }
-    45% {
-      opacity: 0.86;
-      transform: translateY(0) scale(1.03);
-    }
-    100% {
-      opacity: 0.7;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  @keyframes bioCinematicFlow {
-    0% {
-      background-position: 0% 0%, 100% 100%, 50% 50%, -30% 20%, 120% 80%;
-      opacity: 0.42;
-    }
-    25% {
-      background-position: 12% 10%, 88% 86%, 46% 40%, 18% 35%, 92% 62%;
-      opacity: 0.62;
-    }
-    50% {
-      background-position: 24% 18%, 76% 74%, 42% 35%, 52% 58%, 62% 36%;
-      opacity: 0.55;
-    }
-    75% {
-      background-position: 16% 12%, 84% 78%, 52% 46%, 82% 74%, 28% 18%;
-      opacity: 0.66;
-    }
-    100% {
-      background-position: 0% 0%, 100% 100%, 50% 50%, -30% 20%, 120% 80%;
-      opacity: 0.42;
-    }
-  }
-
-  @keyframes bioTextFloat {
-    0%,
-    100% {
-      transform: translateY(0);
-      text-shadow: 0 2px 5px rgba(22, 10, 44, 0.25), 0 0 16px rgba(242, 201, 112, 0.2);
-    }
-    50% {
-      transform: translateY(-3px);
-      text-shadow: 0 3px 10px rgba(22, 10, 44, 0.34), 0 0 22px rgba(255, 213, 140, 0.32);
-    }
-  }
-
-  @keyframes bioBorderOrbit {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes bioBorderSpark {
-    0%,
-    100% {
-      opacity: 0.72;
-      filter: drop-shadow(0 0 6px rgba(252, 211, 130, 0.26));
-    }
-    50% {
-      opacity: 0.98;
-      filter: drop-shadow(0 0 13px rgba(252, 211, 130, 0.46));
-    }
+    text-shadow: 0 2px 5px rgba(22, 10, 44, 0.25);
+    background: linear-gradient(135deg, rgba(15, 23, 75, 0.62), rgba(255, 255, 255, 0.09));
+    box-shadow: 0 18px 48px rgba(4, 10, 34, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(14px);
+    transition: transform 280ms var(--motion-ease), border-color 280ms ease, box-shadow 280ms ease;
   }
 
   .hero-nav {
-    margin-top: 34px;
     display: flex;
     justify-content: center;
     width: 100%;
+    margin-top: 30px;
   }
 
   .hero-nav ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 900px;
     gap: 10px;
-    list-style: none;
     margin: 0;
     padding: 0;
-    max-width: 900px;
+    list-style: none;
   }
 
   .hero-nav-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 18px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 999px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
     background: rgba(255, 255, 255, 0.08);
-    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .hero-nav-link:hover,
-  .hero-nav-link:focus {
-    transform: translateY(-1px);
-    background: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.5);
+    transition: transform 260ms var(--motion-ease), background-color 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
   }
 
   .hero-nav-link.active {
+    border-color: #d4a64f;
+    color: #ffd978;
     background: rgba(212, 166, 79, 0.18);
-    border-color: #D4A64F;
-    color: #FFD978;
+  }
+
+  .hero-nav-link:focus-visible {
+    outline: 2px solid #ffe6aa;
+    outline-offset: 3px;
+  }
+
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero-logo:hover {
+      transform: translateY(-3px) scale(1.025);
+      filter: drop-shadow(0 16px 34px rgba(0, 0, 0, 0.3));
+    }
+
+    .bio:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 226, 164, 0.58);
+      box-shadow: 0 24px 58px rgba(4, 10, 34, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    }
+
+    .hero-nav-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 226, 164, 0.6);
+      background: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 8px 20px rgba(4, 10, 34, 0.18);
+    }
   }
 
   @media (max-width: 768px) {
     .hero {
-      min-height: 100vh;
-    }
-
-    .hero-content {
-      padding: 0 12px;
+      min-height: max(620px, calc(100vh - 62px));
+      min-height: max(620px, calc(100svh - 62px));
+      padding: 38px 18px;
     }
 
     .hero h2 {
-      font-size: 38px;
+      font-size: clamp(1.85rem, 6vw, 2.8rem);
     }
 
     .hero-logo {
-      width: clamp(180px, 30vw, 220px);
+      width: clamp(160px, 32vw, 220px);
     }
 
     .bio {
-      font-size: 16px;
-      padding: 18px;
-    }
-
-    .bio-text {
-      line-height: 1.75;
+      font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+      border-radius: 22px;
     }
 
     .hero-nav {
-      margin-top: 28px;
-    }
-
-    .hero-nav ul {
-      gap: 10px;
-    }
-
-    .hero-nav-link {
-      padding: 10px 16px;
-      font-size: 13px;
+      margin-top: 24px;
     }
   }
 
   @media (max-width: 500px) {
+    .hero {
+      min-height: max(620px, calc(100vh - 58px));
+      min-height: max(620px, calc(100svh - 58px));
+      padding: 32px 16px;
+    }
+
+    .hero-brand {
+      margin-bottom: 16px;
+    }
+
     .hero h2 {
-      font-size: 34px;
+      font-size: clamp(1.8rem, 8vw, 2.3rem);
     }
 
     .hero-logo {
-      width: clamp(160px, 40vw, 200px);
+      width: clamp(148px, 42vw, 184px);
+    }
+
+    .bio {
+      padding: 18px;
+      font-size: 0.95rem;
     }
 
     .hero-nav ul {
-      justify-content: center;
+      display: grid;
+      width: min(100%, 390px);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .hero-nav ul li:last-child {
+      grid-column: 1 / -1;
     }
 
     .hero-nav-link {
-      flex: 1 1 100%;
-      max-width: 100%;
-      border-radius: 999px;
+      width: 100%;
+      padding: 10px 8px;
+      font-size: 0.75rem;
+      white-space: normal;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-content {
+      animation: none;
     }
   }
 </style>

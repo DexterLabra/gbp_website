@@ -1,0 +1,704 @@
+---
+const products = [
+  {
+    code: 'PLH-001WDW',
+    name: 'Morning Light',
+    description: 'A quiet moment by the morning sea.',
+    image: '/LIKHA%20Collections/PLH-001WDW%20Morning%20Light/MorningLight.png',
+    video: '/LIKHA%20Collections/PLH-001WDW%20Morning%20Light/IMG_4499.mp4',
+  },
+  {
+    code: 'PLH-002WDW',
+    name: 'Golden Hour',
+    description: 'The warmth of sunset, captured at home.',
+    image: '/LIKHA%20Collections/PLH-002WDW%20Golden%20Hour/Golden%20Hour.png',
+    video: '/LIKHA%20Collections/PLH-002WDW%20Golden%20Hour/IMG_4575.mp4',
+  },
+  {
+    code: 'PLH-003WDW',
+    name: 'Peaceful Light',
+    description: 'A peaceful pause with a view of the sea.',
+    image: '/LIKHA%20Collections/PLH-003WDW%20Peaceful%20Light/PeacefulLight.png',
+    video: '/LIKHA%20Collections/PLH-003WDW%20Peaceful%20Light/IMG_4518.mp4',
+  },
+  {
+    code: 'PLH-004WDW',
+    name: 'Wine and Blossoms',
+    description: 'An evening scene in rich, painterly color.',
+    image: '/LIKHA%20Collections/PLH-004WDW%20Wine%20and%20Blossoms/WineBlossoms.png',
+    video: '/LIKHA%20Collections/PLH-004WDW%20Wine%20and%20Blossoms/IMG_4524.mp4',
+  },
+];
+---
+
+<section class="likha-section" id="likha">
+  <div class="likha-heading">
+    <span class="likha-eyebrow">A GBP SIGNATURE SERIES</span>
+    <h2>LIKHA COLLECTIONS</h2>
+    <p>Original scenes, thoughtfully framed. Discover each piece in still and in motion.</p>
+    <span class="likha-rule" aria-hidden="true"></span>
+  </div>
+
+  <div class="likha-grid">
+    {products.map((product, index) => (
+      <article class="likha-card" data-likha-card>
+        <div class="likha-media">
+          <div
+            class="likha-media-track"
+            data-likha-track
+            tabindex="0"
+            aria-label={`${product.name} photos and video. Swipe horizontally to explore.`}
+          >
+            <figure class="likha-slide">
+              <img
+                src={product.image}
+                alt={`${product.name} framed artwork from the Likha Collection`}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <figcaption class="sr-only">{product.name} artwork photograph</figcaption>
+            </figure>
+            <figure class="likha-slide">
+              <video
+                playsinline
+                muted
+                loop
+                tabindex="0"
+                preload="none"
+                poster={product.image}
+                aria-label={`${product.name} product video`}
+              >
+                <source src={product.video} type="video/mp4" />
+                Your browser cannot play this video. <a href={product.video}>Open the video</a>.
+              </video>
+              <figcaption class="sr-only">{product.name} product video</figcaption>
+            </figure>
+          </div>
+
+          <span class="likha-edition">LIKHA <span aria-hidden="true">/</span> {String(index + 1).padStart(2, '0')}</span>
+          <button class="likha-arrow likha-prev" type="button" data-likha-step="-1" aria-label={`Previous view of ${product.name}`}>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <button class="likha-arrow likha-next" type="button" data-likha-step="1" aria-label={`Next view of ${product.name}`}>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+
+          <div class="likha-pagination" aria-label={`${product.name} media selection`}>
+            <button type="button" class="likha-dot active" data-likha-index="0" aria-label={`Show ${product.name} photo`} aria-pressed="true"></button>
+            <button type="button" class="likha-dot" data-likha-index="1" aria-label={`Show ${product.name} video`} aria-pressed="false"></button>
+          </div>
+          <span class="likha-counter" aria-live="polite">01 <span aria-hidden="true">/</span> 02</span>
+        </div>
+
+        <div class="likha-card-copy">
+          <span class="likha-code">{product.code}</span>
+          <h3>{product.name}</h3>
+          <p>{product.description}</p>
+          <span class="likha-view-hint"><span aria-hidden="true">&harr;</span> Swipe for more details</span>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-likha-card]').forEach((card) => {
+    const track = card.querySelector<HTMLElement>('[data-likha-track]');
+    const dots = Array.from(card.querySelectorAll<HTMLButtonElement>('[data-likha-index]'));
+    const counter = card.querySelector<HTMLElement>('.likha-counter');
+    const video = card.querySelector<HTMLVideoElement>('video');
+    const scrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+    if (!track || !counter || !video) return;
+
+    let activeIndex = 0;
+    let scrollFrame = 0;
+
+    const resetVideo = () => {
+      video.pause();
+      if (video.readyState > 0) video.currentTime = 0;
+    };
+
+    const syncVideoPlayback = () => {
+      if (activeIndex !== 1 || document.hidden || !document.hasFocus()) {
+        resetVideo();
+        return;
+      }
+
+      void video.play().catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        console.error(`Unable to play the ${video.getAttribute('aria-label') ?? 'collection'} video.`, error);
+      });
+    };
+
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        syncVideoPlayback();
+      } else {
+        resetVideo();
+      }
+    }, { threshold: 0.25 });
+    visibilityObserver.observe(card);
+
+    const handlePageVisibility = () => {
+      if (document.hidden) {
+        resetVideo();
+      } else {
+        syncVideoPlayback();
+      }
+    };
+    const handleWindowBlur = () => resetVideo();
+
+    document.addEventListener('visibilitychange', handlePageVisibility);
+    window.addEventListener('focus', handlePageVisibility);
+    window.addEventListener('blur', handleWindowBlur);
+
+    video.addEventListener('focus', () => selectSlide(1));
+    video.addEventListener('blur', resetVideo);
+
+    const updateActiveSlide = (index: number) => {
+      activeIndex = index;
+      syncVideoPlayback();
+      dots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === activeIndex;
+        dot.classList.toggle('active', isActive);
+        dot.setAttribute('aria-pressed', String(isActive));
+      });
+      counter.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(dots.length).padStart(2, '0')}`;
+    };
+
+    const selectSlide = (index: number) => {
+      const nextIndex = (index + dots.length) % dots.length;
+      updateActiveSlide(nextIndex);
+      track.scrollTo({ left: nextIndex * track.clientWidth, behavior: scrollBehavior });
+    };
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => selectSlide(index));
+    });
+
+    card.querySelectorAll<HTMLButtonElement>('[data-likha-step]').forEach((button) => {
+      button.addEventListener('click', () => {
+        selectSlide(activeIndex + Number(button.dataset.likhaStep));
+      });
+    });
+
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(scrollFrame);
+      scrollFrame = requestAnimationFrame(() => {
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        if (index !== activeIndex) updateActiveSlide(index);
+      });
+    }, { passive: true });
+
+    track.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        selectSlide(activeIndex + 1);
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        selectSlide(activeIndex - 1);
+      }
+    });
+  });
+</script>
+
+<style>
+  @property --likha-frame-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .likha-section {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(72px, 9vw, 124px) clamp(20px, 5vw, 76px);
+    color: #f9f4e9;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(178, 136, 71, 0.16), transparent 44%),
+      linear-gradient(155deg, #10182a, #080d18 72%);
+  }
+
+  .likha-heading {
+    max-width: 720px;
+    margin: 0 auto clamp(40px, 5vw, 66px);
+    text-align: center;
+  }
+
+  .likha-eyebrow,
+  .likha-code {
+    color: #d7b87b;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+  }
+
+  .likha-heading h2 {
+    display: inline-block;
+    margin: 14px 0 12px;
+    color: #f8e6bd;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4.7vw, 3.4rem);
+    font-weight: 500;
+    letter-spacing: 0.055em;
+    text-wrap: balance;
+    background: linear-gradient(110deg, #f8e6bd 8%, #fffaf0 30%, #d8b979 48%, #fff4d8 63%, #f8e6bd 82%);
+    background-size: 220% 100%;
+    background-position: 100% 50%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: likhaTitleShimmer 8s ease-in-out infinite;
+    transition: letter-spacing 350ms ease, filter 350ms ease;
+  }
+
+  .likha-heading > p {
+    color: rgba(249, 244, 233, 0.72);
+    font-size: clamp(0.9rem, 1.6vw, 1.02rem);
+    line-height: 1.8;
+  }
+
+  .likha-rule {
+    display: block;
+    width: 76px;
+    height: 2px;
+    margin: 24px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, #d7b87b 35%, #fff1ca 50%, #d7b87b 65%, transparent);
+    background-size: 200% 100%;
+    background-position: 100% 50%;
+    box-shadow: 0 0 14px rgba(215, 184, 123, 0.22);
+    animation: likhaRuleShimmer 6s ease-in-out infinite;
+    transition: width 350ms ease, box-shadow 350ms ease;
+  }
+
+  .likha-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 26px);
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .likha-card {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(226, 192, 127, 0.3);
+    border-radius: 20px;
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025) 60%);
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(215, 184, 123, 0.07);
+    transition:
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 350ms ease,
+      box-shadow 420ms ease,
+      background-color 350ms ease;
+  }
+
+  .likha-card::before {
+    content: '';
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--likha-frame-angle),
+      rgba(215, 184, 123, 0.28),
+      rgba(255, 247, 224, 0.8),
+      rgba(177, 133, 65, 0.3),
+      rgba(255, 239, 195, 0.74),
+      rgba(215, 184, 123, 0.28)
+    );
+    pointer-events: none;
+    animation: likhaFrameShimmer 11s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .likha-media {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    margin: 12px 12px 0;
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(231, 201, 132, 0.62);
+    border-radius: 12px;
+    background: #e8e0d0;
+    box-shadow:
+      0 0 0 4px rgba(231, 201, 132, 0.055),
+      inset 0 0 24px rgba(17, 12, 6, 0.14);
+  }
+
+  .likha-media::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: -20% auto -20% -75%;
+    width: 52%;
+    background: linear-gradient(
+      105deg,
+      transparent 8%,
+      rgba(255, 255, 255, 0.025) 35%,
+      rgba(255, 242, 205, 0.22) 50%,
+      rgba(255, 255, 255, 0.035) 65%,
+      transparent 92%
+    );
+    opacity: 0;
+    transform: skewX(-14deg);
+    pointer-events: none;
+  }
+
+  .likha-media-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+
+  .likha-media-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .likha-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .likha-slide img,
+  .likha-slide video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), filter 700ms ease;
+  }
+
+  .likha-slide video {
+    object-fit: contain;
+    background: #100e0b;
+  }
+
+  .likha-edition {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 8px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    color: #fff7e6;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    background: rgba(12, 17, 30, 0.58);
+    backdrop-filter: blur(12px);
+    pointer-events: none;
+  }
+
+  .likha-edition span,
+  .likha-counter span {
+    padding: 0 0.25em;
+    color: #d7b87b;
+  }
+
+  .likha-arrow {
+    position: absolute;
+    top: 50%;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(12, 17, 30, 0.64);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background-color 220ms ease, border-color 220ms ease, transform 220ms ease;
+  }
+
+  .likha-arrow svg {
+    width: 19px;
+    height: 19px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .likha-prev { left: 12px; }
+  .likha-next { right: 12px; }
+
+  .likha-pagination {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(12, 17, 30, 0.58);
+    backdrop-filter: blur(10px);
+    transform: translateX(-50%);
+  }
+
+  .likha-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.52);
+    cursor: pointer;
+    transition: width 240ms ease, border-radius 240ms ease, background-color 240ms ease;
+  }
+
+  .likha-dot.active {
+    width: 20px;
+    border-radius: 999px;
+    background: #e7c984;
+  }
+
+  .likha-counter {
+    position: absolute;
+    right: 14px;
+    bottom: 17px;
+    color: #fff7e6;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+
+  .likha-card-copy {
+    min-height: 151px;
+    padding: 20px 18px 22px;
+  }
+
+  .likha-code {
+    font-size: 0.59rem;
+    letter-spacing: 0.15em;
+  }
+
+  .likha-card-copy h3 {
+    margin: 9px 0 6px;
+    color: #fbf3e5;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    font-weight: 500;
+    line-height: 1.3;
+    transition: color 350ms ease, letter-spacing 350ms ease;
+  }
+
+  .likha-card-copy > p {
+    min-height: 2.8em;
+    color: rgba(249, 244, 233, 0.68);
+    font-size: 0.77rem;
+    line-height: 1.7;
+  }
+
+  .likha-view-hint {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+    margin-top: 15px;
+    color: #d7b87b;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+  }
+
+  .likha-view-hint span {
+    font-size: 0.95rem;
+  }
+
+  .likha-arrow:focus-visible,
+  .likha-dot:focus-visible,
+  .likha-media-track:focus-visible {
+    outline: 2px solid #f1d89e;
+    outline-offset: 3px;
+  }
+
+  @keyframes likhaTitleShimmer {
+    0%,
+    100% {
+      background-position: 100% 50%;
+    }
+
+    50% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes likhaRuleShimmer {
+    0%,
+    100% {
+      background-position: 100% 50%;
+    }
+
+    50% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes likhaFrameShimmer {
+    to {
+      --likha-frame-angle: 360deg;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .likha-heading h2:hover {
+      letter-spacing: 0.075em;
+      filter: drop-shadow(0 0 18px rgba(231, 201, 132, 0.2));
+    }
+
+    .likha-heading:hover .likha-rule {
+      width: 112px;
+      box-shadow: 0 0 20px rgba(231, 201, 132, 0.4);
+    }
+
+    .likha-card:hover {
+      transform: translateY(-9px) scale(1.012);
+      border-color: rgba(246, 221, 170, 0.7);
+      background-color: rgba(215, 184, 123, 0.045);
+      box-shadow:
+        0 32px 72px rgba(0, 0, 0, 0.38),
+        0 0 34px rgba(215, 184, 123, 0.18),
+        inset 0 1px 0 rgba(255, 250, 235, 0.18);
+    }
+
+    .likha-card:hover::before {
+      animation-duration: 4s;
+      filter: drop-shadow(0 0 7px rgba(255, 231, 184, 0.48));
+    }
+
+    .likha-card:hover .likha-media::after {
+      opacity: 1;
+      animation: likhaMediaShine 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .likha-card:hover .likha-slide img,
+    .likha-card:hover .likha-slide video {
+      transform: scale(1.035);
+      filter: saturate(1.06) brightness(1.035);
+    }
+
+    .likha-card:hover .likha-card-copy h3 {
+      color: #f8e0a9;
+      letter-spacing: 0.015em;
+    }
+
+    @keyframes likhaMediaShine {
+      from {
+        transform: translateX(0) skewX(-14deg);
+      }
+
+      to {
+        transform: translateX(360%) skewX(-14deg);
+      }
+    }
+
+    .likha-arrow:hover {
+      border-color: rgba(255, 231, 184, 0.72);
+      background: rgba(76, 57, 34, 0.84);
+      transform: translateY(-50%) scale(1.08);
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .likha-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 760px;
+      gap: 20px;
+    }
+
+    .likha-card-copy h3 {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .likha-section {
+      padding: 68px 18px 76px;
+    }
+
+    .likha-heading {
+      margin-bottom: 32px;
+    }
+
+    .likha-heading h2 {
+      letter-spacing: 0.035em;
+    }
+
+    .likha-grid {
+      grid-template-columns: minmax(0, 1fr);
+      width: min(100%, 400px);
+      gap: 18px;
+    }
+
+    .likha-card {
+      border-radius: 18px;
+    }
+
+    .likha-card-copy {
+      min-height: 0;
+      padding: 18px 18px 20px;
+    }
+
+    .likha-card-copy > p {
+      min-height: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .likha-heading h2,
+    .likha-rule,
+    .likha-card::before {
+      animation: none;
+    }
+
+    .likha-media::after {
+      display: none;
+    }
+
+    .likha-card,
+    .likha-arrow,
+    .likha-dot,
+    .likha-heading h2,
+    .likha-rule,
+    .likha-slide img,
+    .likha-slide video,
+    .likha-card-copy h3 {
+      transition: none;
+    }
+
+    .likha-media-track {
+      scroll-behavior: auto;
+    }
+  }
+</style>

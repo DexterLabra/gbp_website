@@ -166,8 +166,10 @@
     box-shadow: 0 6px 16px rgba(255, 255, 255, 0.16);
   }
 
-  .logo-link img:hover {
-    transform: rotate(6deg) scale(1.08);
+  .logo-link:focus-visible {
+    outline: 2px solid #ffe6aa;
+    outline-offset: 4px;
+    border-radius: 50%;
   }
 
   .header-actions {
@@ -205,7 +207,7 @@
     align-items: center;
     justify-content: center;
     color: #fff4d1;
-    animation: noticeIconFloat 2.8s ease-in-out infinite;
+    animation: none;
   }
 
   .header-notice-icon svg {
@@ -263,12 +265,10 @@
     transition: transform 0.75s ease;
   }
 
-  .theme-toggle:hover::before,
   .theme-toggle:focus-visible::before {
     transform: translateX(120%);
   }
 
-  .theme-toggle:hover,
   .theme-toggle:focus-visible {
     transform: translateY(-2px);
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
@@ -323,10 +323,6 @@
   .theme-toggle.active .toggle-icon .icon-moon {
     opacity: 1;
     transform: rotate(0deg) scale(1);
-  }
-
-  .theme-toggle:hover .toggle-icon {
-    transform: rotate(16deg) scale(1.08);
   }
 
   .toggle-label {
@@ -404,6 +400,26 @@
 
     .toggle-label {
       display: none;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .logo-link:hover img {
+      transform: rotate(4deg) scale(1.05);
+    }
+
+    .theme-toggle:hover::before {
+      transform: translateX(120%);
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .theme-toggle:hover .toggle-icon {
+      transform: rotate(12deg) scale(1.06);
     }
   }
 </style>
