@@ -45,8 +45,9 @@ const extendedItems = [
 
   // pos is index in the extended array. Real items are at indices 1..total
   let pos = 1;
-  let timer: ReturnType<typeof setInterval>;
+  let timer: ReturnType<typeof setInterval> | undefined;
   let transitioning = false;
+  let isInViewport = false;
 
   function getSlidePercent() {
     const val = getComputedStyle(viewport).getPropertyValue('--slide-width').trim();
@@ -122,12 +123,36 @@ const extendedItems = [
   }
 
   function startAutoplay() {
-    timer = setInterval(next, 4000);
+    stopAutoplay();
+    if (
+      !isInViewport ||
+      document.hidden ||
+      viewport.matches(':hover') ||
+      viewport.contains(document.activeElement) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return;
+
+    timer = setInterval(next, 5000);
   }
 
   function stopAutoplay() {
-    clearInterval(timer);
+    if (timer !== undefined) {
+      clearInterval(timer);
+      timer = undefined;
+    }
   }
+
+  const autoplayObserver = new IntersectionObserver(([entry]) => {
+    isInViewport = entry.isIntersecting;
+    startAutoplay();
+  }, { threshold: 0.1 });
+  autoplayObserver.observe(viewport);
+
+  document.addEventListener('visibilitychange', startAutoplay);
+  viewport.addEventListener('focusin', stopAutoplay);
+  viewport.addEventListener('focusout', () => {
+    window.setTimeout(startAutoplay, 0);
+  });
 
   // Dot clicks
   dots.forEach((dot) => {

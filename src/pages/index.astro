@@ -49,9 +49,6 @@ import MessengerButton from '../components/MessengerButton.astro';
     font-size: 45px;
     margin: 70px 0 50px;
     color: var(--heading-color);
-    opacity: 0;
-    transform: translateY(60px);
-    transition: 1s;
   }
 
   .section-title::after {
@@ -61,11 +58,6 @@ import MessengerButton from '../components/MessengerButton.astro';
     height: 3px;
     margin: 15px auto 0;
     background: linear-gradient(to right, #D4A64F, #FFD978, #D4A64F);
-  }
-
-  :global(.section-title.show) {
-    opacity: 1;
-    transform: translateY(0);
   }
 
   @media (max-width: 768px) {

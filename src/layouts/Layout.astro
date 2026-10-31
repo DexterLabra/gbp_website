@@ -134,6 +134,61 @@ const { title } = Astro.props;
     content-visibility: auto;
   }
 
+  .hero-content,
+  .featured-section,
+  #collections,
+  .likha-grid,
+  .products,
+  .shipping-grid,
+  .testimonials-section,
+  .inquiry-form,
+  .contact-shell,
+  footer {
+    perspective: 1200px;
+  }
+
+  body.has-depth-reveal .depth-reveal {
+    opacity: 0;
+    translate: 0 38px -48px;
+    rotate: x 7deg;
+    scale: 0.975;
+    transition:
+      opacity 780ms var(--motion-ease),
+      translate 880ms var(--motion-ease),
+      rotate 880ms var(--motion-ease),
+      scale 880ms var(--motion-ease);
+    transition-delay: calc(var(--reveal-order, 0) * 70ms);
+    backface-visibility: hidden;
+  }
+
+  body.has-depth-reveal .depth-reveal.is-depth-visible {
+    opacity: 1;
+    translate: 0 0 0;
+    rotate: x 0deg;
+    scale: 1;
+  }
+
+  body.has-depth-reveal .shipping-card,
+  body.has-depth-reveal .shipping-logo-item {
+    animation: none;
+  }
+
+  @media (max-width: 768px) {
+    body.has-depth-reveal .depth-reveal {
+      translate: 0 26px -24px;
+      rotate: x 4deg;
+      scale: 0.985;
+      transition-duration: 620ms, 700ms, 700ms, 700ms;
+      transition-delay: calc(var(--reveal-order, 0) * 45ms);
+    }
+
+    body.has-depth-reveal .depth-reveal.is-depth-visible {
+      translate: 0 0 0;
+      rotate: x 0deg;
+      scale: 1;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -146,6 +201,14 @@ const { title } = Astro.props;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+    }
+
+    body.has-depth-reveal .depth-reveal,
+    body.has-depth-reveal .depth-reveal.is-depth-visible {
+      opacity: 1;
+      translate: none;
+      rotate: none;
+      scale: 1;
     }
   }
 </style>

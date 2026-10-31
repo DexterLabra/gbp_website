@@ -29,18 +29,60 @@ function initCategoryFilter() {
 
 // Scroll Reveal
 function initScrollReveal() {
-    const items = document.querySelectorAll('.product, .section-title, .contact');
+    const groups = [
+        '.hero-brand, .hero .bio, .hero-nav',
+        '.featured-section > .section-title, .featured-image-wrapper, .featured-details',
+        '.likha-heading, .likha-card',
+        '#collections > .section-title, #collections > .select-wrap, #collections .product',
+        '.shipping-shell > .section-title, .shipping-card',
+        '.testimonials-section > .section-title, .testimonial-divider, #feedback-carousel, #feedback-dots',
+        '.inquiry-section > .section-title, .inquiry-form .form-row, .inquiry-form > .submit-btn',
+        '.contact-intro > .eyebrow, .contact-intro > h2, .contact-card, .contact-links',
+        'footer'
+    ];
+    const items: HTMLElement[] = [];
+    const seen = new Set<HTMLElement>();
+
+    groups.forEach((selector) => {
+        document.querySelectorAll<HTMLElement>(selector).forEach((item, index) => {
+            if (seen.has(item)) return;
+            seen.add(item);
+            item.classList.add('depth-reveal');
+            item.style.setProperty('--reveal-order', String(index % 5));
+            items.push(item);
+        });
+    });
+
+    if (!items.length) return;
+
+    const revealImmediately = () => {
+        items.forEach((item) => item.classList.add('is-depth-visible'));
+        document.body.classList.add('has-depth-reveal');
+    };
+
+    if (
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        !('IntersectionObserver' in window)
+    ) {
+        revealImmediately();
+        return;
+    }
+
+    const initiallyVisible = items.filter((item) => {
+        const bounds = item.getBoundingClientRect();
+        return bounds.top < window.innerHeight * 0.94 && bounds.bottom > 0;
+    });
+    initiallyVisible.forEach((item) => item.classList.add('is-depth-visible'));
+    document.body.classList.add('has-depth-reveal');
+
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                    observer.unobserve(entry.target);
-                }
+                entry.target.classList.toggle('is-depth-visible', entry.isIntersecting);
             });
         },
         {
-            threshold: 0.08,
+            threshold: 0.12,
             rootMargin: '0px 0px -8% 0px'
         }
     );
