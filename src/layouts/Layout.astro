@@ -149,16 +149,19 @@ const { title } = Astro.props;
 
   body.has-depth-reveal .depth-reveal {
     opacity: 0;
-    translate: 0 38px -48px;
-    rotate: x 7deg;
-    scale: 0.975;
+    translate: 0 34px -56px;
+    rotate: x 8deg;
+    scale: 0.97;
+    filter: blur(4px) brightness(0.96) drop-shadow(0 0 18px rgba(212, 166, 79, 0.2));
     transition:
       opacity 780ms var(--motion-ease),
       translate 880ms var(--motion-ease),
       rotate 880ms var(--motion-ease),
-      scale 880ms var(--motion-ease);
+      scale 880ms var(--motion-ease),
+      filter 780ms var(--motion-ease);
     transition-delay: calc(var(--reveal-order, 0) * 70ms);
     backface-visibility: hidden;
+    transform-style: preserve-3d;
   }
 
   body.has-depth-reveal .depth-reveal.is-depth-visible {
@@ -166,6 +169,7 @@ const { title } = Astro.props;
     translate: 0 0 0;
     rotate: x 0deg;
     scale: 1;
+    filter: none;
   }
 
   body.has-depth-reveal .shipping-card,
@@ -178,7 +182,8 @@ const { title } = Astro.props;
       translate: 0 26px -24px;
       rotate: x 4deg;
       scale: 0.985;
-      transition-duration: 620ms, 700ms, 700ms, 700ms;
+      filter: blur(2px) brightness(0.98) drop-shadow(0 0 12px rgba(212, 166, 79, 0.16));
+      transition-duration: 620ms, 700ms, 700ms, 700ms, 620ms;
       transition-delay: calc(var(--reveal-order, 0) * 45ms);
     }
 
@@ -186,6 +191,7 @@ const { title } = Astro.props;
       translate: 0 0 0;
       rotate: x 0deg;
       scale: 1;
+      filter: none;
     }
   }
 
@@ -209,6 +215,7 @@ const { title } = Astro.props;
       translate: none;
       rotate: none;
       scale: 1;
+      filter: none;
     }
   }
 </style>

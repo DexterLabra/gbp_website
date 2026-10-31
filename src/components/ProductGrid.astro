@@ -33,4 +33,11 @@ import ProductCard from './ProductCard.astro';
       width: min(92%, 420px);
     }
   }
+
+  @media (max-width: 380px) {
+    .products {
+      grid-template-columns: minmax(0, 1fr);
+      width: min(100% - 32px, 360px);
+    }
+  }
 </style>

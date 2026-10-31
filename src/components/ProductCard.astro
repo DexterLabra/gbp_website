@@ -280,4 +280,15 @@ const hasVariants = product.variants && product.variants.length > 0;
       font-size: 11px;
     }
   }
+
+  @media (max-width: 380px) {
+    .product img {
+      height: auto;
+      aspect-ratio: 4 / 3;
+    }
+
+    .overlay {
+      padding: 14px 12px;
+    }
+  }
 </style>
