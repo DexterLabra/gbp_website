@@ -36,6 +36,7 @@ function initScrollReveal() {
         '#collections > .section-title, #collections > .select-wrap, #collections .product',
         '.shipping-shell > .section-title, .shipping-card',
         '.testimonials-section > .section-title, .testimonial-divider, #feedback-carousel, #feedback-dots',
+        '#exclusive .exclusive-heading, #exclusive .exclusive-card',
         '.inquiry-section > .section-title, .inquiry-form .form-row, .inquiry-form > .submit-btn',
         '.contact-intro > .eyebrow, .contact-intro > h2, .contact-card, .contact-links',
         'footer'

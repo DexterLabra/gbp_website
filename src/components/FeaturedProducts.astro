@@ -77,6 +77,9 @@ import { featuredProducts } from '../data/featured';
     const title = document.getElementById('featured-title') as HTMLHeadingElement;
     const category = document.getElementById('featured-category') as HTMLSpanElement;
     const price = document.getElementById('featured-price') as HTMLParagraphElement;
+    const scrollBehavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'instant'
+      : 'smooth';
 
     function getScrollStep() {
       const firstItem = carouselItems[0];
@@ -125,9 +128,9 @@ import { featuredProducts } from '../data/featured';
       const scrollStep = getScrollStep();
       if (scrollLeft <= 0) {
         // Jump to end
-        carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+        carousel.scrollTo({ left: carousel.scrollWidth, behavior: scrollBehavior });
       } else {
-        carousel.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+        carousel.scrollBy({ left: -scrollStep, behavior: scrollBehavior });
       }
     });
 
@@ -136,9 +139,9 @@ import { featuredProducts } from '../data/featured';
       const scrollStep = getScrollStep();
       if (carousel.scrollLeft >= maxScroll - 2) {
         // Loop back to start
-        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+        carousel.scrollTo({ left: 0, behavior: scrollBehavior });
       } else {
-        carousel.scrollBy({ left: scrollStep, behavior: 'smooth' });
+        carousel.scrollBy({ left: scrollStep, behavior: scrollBehavior });
       }
     });
   });
@@ -675,6 +678,7 @@ import { featuredProducts } from '../data/featured';
 
     .featured-carousel {
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scroll-snap-type: x proximity;
       padding-bottom: 4px;
     }

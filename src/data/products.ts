@@ -29,38 +29,38 @@ export const categories = [
     { value: "hardware", label: "Decorative Hardwares" },
 ];
 
-export const products: Product[] = [
+export const exclusiveProducts: Product[] = [
     {
         id: "man-dog-lover-statue",
         name: "Elegant Man Dog Lover Decor Statue",
-        category: "Figurines",
+        category: "figurines",
         image: "/images/ManDogLoverStatue1.png",
         size: "7.0cm L x 6.70cm W x 28.20cm H",
         price: "₱1,995",
         orderUrl: ORDER_URL,
     },
-    
     {
         id: "male-doctor-statue",
         name: "Elegant Male Doctor Decor Statue",
-        category: "Figurines",
+        category: "figurines",
         image: "/images/MaleDoctorStatue1.png",
         size: "7.0cm L x 6.70cm W x 28.20cm H",
         price: "₱1,995",
         orderUrl: ORDER_URL,
     },
-    
     {
         id: "lady-cat-lover",
         name: "Elegant Lady Cat Lover Decor Statue",
-        category: "Figurines",
+        category: "figurines",
         image: "/images/LadyCatLover1.png",
         size: "7.0cm L x 6.70cm W x 28.20cm H",
         price: "₱1,995",
         orderUrl: ORDER_URL,
     },
-    
-     {
+];
+
+export const products: Product[] = [
+    {
         id: "horse-wine-holder",
         name: "Golden Horse Chariot Wine Holder ",
         category: "tray",

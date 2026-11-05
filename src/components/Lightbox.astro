@@ -115,6 +115,20 @@
     }
   });
 
+  document.querySelectorAll<HTMLImageElement>(".exclusive-image-frame img, .likha-slide img").forEach((image) => {
+    const card = image.closest<HTMLElement>(".exclusive-card, [data-likha-card]");
+    const name = card?.querySelector("h3")?.textContent?.trim() || image.alt;
+    const openImage = () => openLightbox([image.currentSrc || image.src], 0, name);
+
+    image.style.cursor = "zoom-in";
+    image.addEventListener("click", openImage);
+    image.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openImage();
+    });
+  });
+
   // Attach click to testimonial/feedback images (independent, no carousel)
   const testimonialCards = document.querySelectorAll<HTMLElement>(".testimonial-card");
 

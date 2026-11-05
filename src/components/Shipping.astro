@@ -68,7 +68,7 @@
   }
 
   .shipping-section::after {
-    inset: -60px -80px auto auto;
+    inset: -60px 0 auto auto;
     width: 280px;
     height: 280px;
     background: radial-gradient(circle, rgba(17, 29, 122, 0.12), transparent 70%);
@@ -244,7 +244,18 @@
 
   @media (max-width: 600px) {
     .shipping-section {
-      padding: 90px 5%;
+      min-height: 0;
+      padding: clamp(68px, 12vw, 90px) 5%;
+    }
+
+    .shipping-section::after {
+      width: 190px;
+      height: 190px;
+    }
+
+    .shipping-section .section-title {
+      font-size: clamp(1.7rem, 7vw, 2.2rem);
+      margin-bottom: 36px;
     }
 
     .shipping-card {
@@ -258,11 +269,15 @@
 
     .shipping-logo-item {
       width: 100%;
+      max-width: 128px;
+      min-width: 0;
       min-height: 110px;
+      justify-self: center;
     }
 
     .shipping-card p {
       font-size: 0.95rem;
+      overflow-wrap: anywhere;
     }
   }
 </style>
